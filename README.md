@@ -1,14 +1,35 @@
-# switch-proxy
+# swpro
+Crystalによって書かれたUbuntu用HTTPプロキシ設定CLIツールです｡
+現在はaptにのみ対応しています｡
 
-TODO: Write a description here
 
 ## Installation
 
-TODO: Write installation instructions here
-
+このレポジトリをクローンし､
+```
+crystal build src/swtch-proxy.cr
+```
+を実行すると､実行可能ファイルが生成されます｡
 ## Usage
 ![demo](https://raw.githubusercontent.com/takanotume24/swpro/master/gif/simplescreenrecorder-2019-12-15_01.53.59.gif)
 
+```
+  proxy setting tool.
+
+  Usage:
+
+    swpro [sub_command] [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+  Sub Commands:
+
+    enable    enable proxy setting
+    disable   disable proxy setting
+    set       set configs
+```
 ## Development
 
 TODO: Write development instructions here
