@@ -7,8 +7,7 @@ TODO: Write a description here
 TODO: Write installation instructions here
 
 ## Usage
-
-TODO: Write usage instructions here
+![demo](https://raw.githubusercontent.com/takanotume24/swpro/master/gif/simplescreenrecorder-2019-12-15_01.53.59.gif)
 
 ## Development
 
