@@ -13,5 +13,5 @@ crystal: 0.32.0
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.9.0
+
 license: MIT

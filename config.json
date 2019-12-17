@@ -1,0 +1,51 @@
+[{
+    "cmd_name": "apt",
+    "conf_path": "/etc/apt/apt.conf",
+    "keys": {
+        "http_proxy": {
+            "enable_set": {
+                "regex": ".*Acquire::http::Proxy",
+                "string": "Acquire::http::Proxy"
+            },
+            "disable_set": {
+                "regex": ".*#.*Acquire::http::Proxy",
+                "string": "# Acquire::http::Proxy"
+            }
+        },
+        "https_proxy": {
+            "enable_set": {
+                "regex": ".*Acquire::https::Proxy",
+                "string": "Acquire::https::Proxy"
+            },
+            "disable_set": {
+                "regex": ".*#.*Acquire::https::Proxy",
+                "string": "# Acquire::https::Proxy"
+            }
+        }
+    }
+}, {
+    "cmd_name": "wget",
+    "conf_path": "~/.wgetrc",
+    "keys": {
+        "http_proxy": {
+            "enable_set": {
+                "regex": ".*http_proxy=",
+                "string": "http_proxy="
+            },
+            "disable_set": {
+                "regex": ".*#.*http_proxy=",
+                "string": "# http_proxy="
+            }
+        },
+        "https_proxy": {
+            "enable_set": {
+                "regex": ".*https_proxy=",
+                "string": "https_proxy="
+            },
+            "disable_set": {
+                "regex": ".*#.*https_proxy=",
+                "string": "# https_proxy="
+            }
+        }
+    }
+}]
