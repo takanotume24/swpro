@@ -1,10 +1,6 @@
 require "json"
-PATH_CONF_APT   = "./apt.conf"
-HTTP_PROXY_APT  = "Acquire::http::Proxy"
-HTTPS_PROXY_APT = "Acquire::https::Proxy"
-PATH_CONF_WGET  = "./.wgetrc"
-HTTP_PROXY_WGET = "http_proxy="
 
+SWPRO_CONF_PATH = Path["./config.json"].normalize.expand(home: true)
 class Keyword
   JSON.mapping(
     http_proxy: {type: OptionSet, nilable: false},

@@ -25,7 +25,7 @@ module Switch::Proxy
           check_arg_num opts, args, num = 1
 
           _command = args[0]
-          configs = Array(Config).from_json(File.read "./config.json")
+          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
           index = search_command configs, _command
           config = configs[index]
           path = Path[config.conf_path].normalize.expand(home: true)
@@ -47,7 +47,7 @@ module Switch::Proxy
           check_arg_num opts, args, num = 1
 
           _command = args[0]
-          configs = Array(Config).from_json(File.read "./config.json")
+          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
           index = search_command configs, _command
           config = configs[index]
           path = Path[config.conf_path].normalize.expand(home: true)
@@ -72,7 +72,7 @@ module Switch::Proxy
           _url = args[1]
 
           content = nil
-          configs = Array(Config).from_json(File.read "./config.json")
+          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
           index = search_command configs, _command
 
           config = configs[index]
