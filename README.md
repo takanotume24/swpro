@@ -1,4 +1,4 @@
-# swpro
+# swpro ![](https://github.com/takanotume24/swpro/workflows/Crystal%20CI/badge.svg)
 Crystalによって書かれたUbuntu用HTTPプロキシ設定CLIツールです｡
 現在はaptにのみ対応しています｡
 
