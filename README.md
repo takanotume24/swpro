@@ -7,7 +7,7 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 学校･職場などでのネットワークにHTTPプロキシサーバが設置されている環境下で､Ubuntuマシンを使おうとするとそれぞれのコマンドにHTTPプロキシの設定を適用しなければいけません｡その際､コマンドごとにHTTPプロキシの設定の仕方はまちまちで､設定のたびに設定方法を調べる必要がありました｡swproはその設定方法の差異を吸収し操作を統一します｡
 
 ## Installation
-### インストール
+### [手順1]インストール
 #### - 方法1 : [おすすめ]このレポジトリをクローンする
 ```
 $ git clone https://github.com/takanotume24/swpro.git
@@ -29,15 +29,16 @@ $ crystal build src/swtch-proxy.cr -o bin/swpro
 ```
 を実行すると､実行可能ファイル(bin/swpro)が生成されます｡
 
-### コンフィグファイルを``~/.swpro.json``へ設置する
-設定済みコンフィグファイルをからダウンロードし､``~/.swpro.json``へコピーします｡
+### [手順2]コンフィグファイルを``~/.swpro.json``へ設置する
+設定済みコンフィグファイルを  [ダウンロード](https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json)し､``~/.swpro.json``へコピーします｡
+```
+$ wget https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json -O ~/.swpro.json
+```
+
 
 ## Usage
 ### コマンド使用方法
 
-```
-$ wget https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json -O ~/.swpro.json
-```
 
 #### - コマンドに対してプロキシサーバを登録する
 ```
