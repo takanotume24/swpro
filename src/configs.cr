@@ -1,6 +1,7 @@
 require "json"
 
-SWPRO_CONF_PATH = Path["./config.json"].normalize.expand(home: true)
+SWPRO_CONF_PATH = Path["~/.swpro.json"].normalize.expand(home: true)
+
 class Keyword
   JSON.mapping(
     http_proxy: {type: OptionSet, nilable: false},

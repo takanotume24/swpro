@@ -9,7 +9,7 @@ module Switch::Proxy
 
   class MyCli < Clim
     main do
-      desc "proxy setting tool."
+      desc "proxy setting helper."
       usage "swpro [sub_command] [arguments]"
       help short: "-h"
 
@@ -18,7 +18,7 @@ module Switch::Proxy
       end
 
       sub "enable" do
-        desc "enable proxy setting"
+        desc "enable proxy setting."
         usage "swpro enable [command]"
 
         run do |opts, args, io|
@@ -29,6 +29,8 @@ module Switch::Proxy
           index = search_command configs, _command
           config = configs[index]
           path = Path[config.conf_path].normalize.expand(home: true)
+          check_file_exists_only_check path
+          check_writable path
 
           content = File.read path
           content = content.gsub Regex.new(config.keys.http_proxy.disable_set.regex), config.keys.http_proxy.enable_set.string
@@ -40,7 +42,7 @@ module Switch::Proxy
       end
 
       sub "disable" do
-        desc "disable proxy setting"
+        desc "disable proxy setting."
         usage "swpro disable [command]"
 
         run do |opts, args, io|
@@ -51,6 +53,8 @@ module Switch::Proxy
           index = search_command configs, _command
           config = configs[index]
           path = Path[config.conf_path].normalize.expand(home: true)
+          check_file_exists_only_check path
+          check_writable path
 
           content = File.read path
           content = content.gsub Regex.new(config.keys.http_proxy.enable_set.regex), config.keys.http_proxy.disable_set.string
@@ -62,7 +66,7 @@ module Switch::Proxy
       end
 
       sub "set" do
-        desc "set configs"
+        desc "set configs."
         usage "swpro set [command] [proxy server uri]"
 
         run do |opts, args, io|
