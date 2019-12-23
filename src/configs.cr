@@ -23,10 +23,18 @@ class OptionSet
   )
 end
 
+class ConfigPathSet
+  JSON.mapping(
+    system: {type: String, nilable: false},
+    user: {type: String, nilable: false},
+  )
+end
+
 class Config
   JSON.mapping(
     cmd_name: String,
-    conf_path: String,
+    conf_path: ConfigPathSet,
+    row_end: String,
     keys: {type: Keyword, nilable: false},
   )
 end

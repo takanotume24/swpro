@@ -1,6 +1,10 @@
 [{
     "cmd_name": "apt",
-    "conf_path": "/etc/apt/apt.conf",
+    "conf_path": {
+        "system": "/etc/apt/apt.conf",
+        "user": ""
+    },
+    "row_end": ";"
     "keys": {
         "http_proxy": {
             "enable_set": {
@@ -25,7 +29,11 @@
     }
 }, {
     "cmd_name": "wget",
-    "conf_path": "~/.wgetrc",
+    "conf_path": {
+        "system": "/etc/wgetrc",
+        "user": "~/.wgetrc"
+    },
+    "row_end": "",
     "keys": {
         "http_proxy": {
             "enable_set": {
@@ -45,6 +53,35 @@
             "disable_set": {
                 "regex": ".*#.*https_proxy=",
                 "string": "# https_proxy="
+            }
+        }
+    }
+}, {
+    "cmd_name": "bash",
+    "conf_path": {
+        "system": "",
+        "user": "~/.bashrc"
+    },
+    "row_end": "",
+    "keys": {
+        "http_proxy": {
+            "enable_set": {
+                "regex": ".*http_proxy=",
+                "string": "http_proxy="
+            },
+            "disable_set": {
+                "regex": "#.*http_proxy=",
+                "string": "# http_proxy="
+            }
+        },
+        "https_proxy": {
+            "enable_set": {
+                "regex": ".*http_proxy=",
+                "string": "http_proxy="
+            },
+            "disable_set": {
+                "regex": "#.*http_proxy=",
+                "string": "# http_proxy="
             }
         }
     }

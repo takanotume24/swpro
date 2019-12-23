@@ -18,6 +18,8 @@ module Switch::Proxy
       end
 
       sub "enable" do
+        option "--system", type: Bool, desc: "applay for system."
+        option "--user", type: Bool, desc: "applay for user."
         desc "enable proxy setting."
         usage "swpro enable [command]"
 
@@ -27,8 +29,9 @@ module Switch::Proxy
           _command = args[0]
           configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
           index = search_command configs, _command
-          config = configs[index]
-          path = Path[config.conf_path].normalize.expand(home: true)
+          config = index.nil? ? return -1 : configs[index]
+          path = select_path config, opts
+
           check_file_exists_only_check path
           check_writable path
 
@@ -42,6 +45,8 @@ module Switch::Proxy
       end
 
       sub "disable" do
+        option "--system", type: Bool, desc: "applay for system."
+        option "--user", type: Bool, desc: "applay for user."
         desc "disable proxy setting."
         usage "swpro disable [command]"
 
@@ -51,8 +56,8 @@ module Switch::Proxy
           _command = args[0]
           configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
           index = search_command configs, _command
-          config = configs[index]
-          path = Path[config.conf_path].normalize.expand(home: true)
+          config = index.nil? ? return -1 : configs[index]
+          path = select_path config, opts
           check_file_exists_only_check path
           check_writable path
 
@@ -66,6 +71,8 @@ module Switch::Proxy
       end
 
       sub "set" do
+        option "--system", type: Bool, desc: "applay for system."
+        option "--user", type: Bool, desc: "applay for user."
         desc "set configs."
         usage "swpro set [command] [proxy server uri]"
 
@@ -79,8 +86,9 @@ module Switch::Proxy
           configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
           index = search_command configs, _command
 
-          config = configs[index]
-          path = Path[config.conf_path].normalize.expand(home: true)
+          config = index.nil? ? return -1 : configs[index]
+
+          path = select_path config, opts
 
           check_file_exists path
 
@@ -90,6 +98,26 @@ module Switch::Proxy
           File.write(path, content)
 
           io.puts "プロキシ設定が完了しました｡ (^_^)"
+        end
+      end
+
+      sub "symlink" do
+        desc "create symlink."
+        usage "swpro symlink"
+
+        run do |opts, args, io|
+          check_arg_num opts, args, num = 0
+          new_path = Path["/bin/swpro"].normalize.expand(home: true).to_s
+          old_path = Path["./bin/swpro"].normalize.expand(home: true).to_s
+          if File.file? new_path
+            io.puts "既にシンボリックリンクが存在します"
+            return -1
+          end
+          if File.file? old_path
+            io.puts "#{old_path}が存在しません"
+            return -1
+          end
+          File.symlink old_path, new_path
         end
       end
     end

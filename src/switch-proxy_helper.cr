@@ -45,12 +45,12 @@ def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : St
   regex_set_http = config.keys.http_proxy
   regex_set_https = config.keys.https_proxy
 
-  content = set_value(path, content, regex_set_http, url, io)
-  content = set_value(path, content, regex_set_https, url, io)
+  content = set_value(path, content, regex_set_http, url, config.row_end, io)
+  content = set_value(path, content, regex_set_https, url, config.row_end, io)
   return content
 end
 
-def set_value(path : Path, content : String, config : OptionSet, url : String, io : IO = STDOUT) : String
+def set_value(path : Path, content : String, config : OptionSet, url : String, file_end : String, io : IO = STDOUT) : String
   regex = Regex.new(config.enable_set.regex + ".*")
   match_data = content.scan(regex)
 
@@ -69,14 +69,14 @@ def set_value(path : Path, content : String, config : OptionSet, url : String, i
       return content
     end
 
-    content = content.gsub(regex, "#{config.enable_set.string} #{url};")
+    content = content.gsub(regex, "#{config.enable_set.string} #{url}")
     io.puts "書き換えました｡"
   end
 
   return content
 end
 
-def search_command(configs : Array(Config), command : String, io : IO = STDOUT) : Int32
+def search_command(configs : Array(Config), command : String, io : IO = STDOUT) : Int32?
   i = 0
   configs.each do |config|
     if (config.cmd_name == command)
@@ -85,8 +85,19 @@ def search_command(configs : Array(Config), command : String, io : IO = STDOUT) 
     i += 1
   end
   if i == configs.size
-    puts "Jsonに#{command}の設定の記述は見つかりませんでした (>_<)"
-    abort
+    io.puts "#{command}には対応していません"
+    return nil
   end
   return i
+end
+
+def select_path(config, opts) : Path
+  case opts
+  when .system
+    return Path[config.conf_path.system].normalize.expand(home: true)
+  when .user
+    return Path[config.conf_path.system].normalize.expand(home: true)
+  else
+    return Path[config.conf_path.system].normalize.expand(home: true)
+  end
 end
