@@ -58,7 +58,7 @@ module Switch::Proxy
           index = search_command configs, _command
           config = index.nil? ? return -1 : configs[index]
           path = select_path config, opts
-          check_file_exists_only_check path
+          check_file_exists_only_check path,io
           check_writable path
 
           content = File.read path
@@ -98,6 +98,17 @@ module Switch::Proxy
           File.write(path, content)
 
           io.puts "プロキシ設定が完了しました｡ (^_^)"
+        end
+      end
+
+      sub "check" do
+        desc "check swpro.json"
+        usage "swpro check"
+
+        run do |opts, args, io|
+          check_arg_num opts, args, num = 0
+          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
+          is_vaild_json? configs, io
         end
       end
 

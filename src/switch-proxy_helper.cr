@@ -101,3 +101,22 @@ def select_path(config, opts) : Path
     return Path[config.conf_path.system].normalize.expand(home: true)
   end
 end
+
+def is_vaild_json?(configs : Array(Config), io : IO) : Bool
+  i = 0
+  result = false
+  configs.each do |config|
+    case
+    when config.cmd_name.to_s.empty?
+      io.puts "[error] #{i}番目のcmd_nameがemptyです"
+    when config.conf_path.system.empty? && config.conf_path.user.empty?
+      io.puts "[error] #{i}番目のconf_path.systemとconf_path.userがemptyです"
+    else
+      io.puts "#{i}番目に問題はありませんでした"
+      result = true
+    end
+    i+=1
+  end
+
+  return result
+end
