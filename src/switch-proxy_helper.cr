@@ -115,7 +115,7 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
       io.puts "#{i}番目に問題はありませんでした"
       result = true
     end
-    i+=1
+    i += 1
   end
 
   return result

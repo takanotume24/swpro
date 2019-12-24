@@ -1,6 +1,7 @@
 # TODO: Write documentation for `Switch::Proxy`
 require "clim"
 require "json"
+require "file_utils"
 require "./switch-proxy_helper.cr"
 require "./configs.cr"
 
@@ -58,7 +59,7 @@ module Switch::Proxy
           index = search_command configs, _command
           config = index.nil? ? return -1 : configs[index]
           path = select_path config, opts
-          check_file_exists_only_check path,io
+          check_file_exists_only_check path, io
           check_writable path
 
           content = File.read path
@@ -109,6 +110,17 @@ module Switch::Proxy
           check_arg_num opts, args, num = 0
           configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
           is_vaild_json? configs, io
+        end
+      end
+
+      sub "cp_json" do
+        desc "copy json to ~/.swpro.json"
+        usage "swpro cp_json"
+
+        run do |opts, args, io|
+          src = Path["./.swpro.json"].normalize.expand(home: true).to_s
+          dest = Path["~/.swpro.json"].normalize.expand(home: true).to_s
+          FileUtils.cp src_path: src, dest: dest
         end
       end
 
