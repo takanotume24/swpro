@@ -11,7 +11,7 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 <br/>
 
 ## Installation
-1. ### [手順1]インストール
+### [手順1]インストール
 - #### 方法1 : [おすすめ]このレポジトリをクローンする
    ```
    $ git clone https://github.com/takanotume24/swpro.git
@@ -33,7 +33,7 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
    ```
    を実行すると､実行可能ファイル(bin/swpro)が生成されます｡
 
-2. ### [手順2]コンフィグファイルを``~/.swpro.json``へ設置する
+### [手順2]コンフィグファイルを``~/.swpro.json``へ設置する
    設定済みコンフィグファイルを  [ダウンロード](https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json)し､``~/.swpro.json``へコピーします｡
    ```
    $ wget https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json -O ~/.swpro.json
