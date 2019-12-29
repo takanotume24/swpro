@@ -98,8 +98,15 @@ def select_path(config, opts) : Path
     return Path[config.conf_path.system].normalize.expand(home: true)
   when .user
     return Path[config.conf_path.system].normalize.expand(home: true)
-  else
+  end
+
+  case
+  when config.conf_path.system.empty?
+    return Path[config.conf_path.user].normalize.expand(home: true)
+  when config.conf_path.user.empty?
     return Path[config.conf_path.system].normalize.expand(home: true)
+  else
+    return Path[config.conf_path.user].normalize.expand(home: true)
   end
 end
 

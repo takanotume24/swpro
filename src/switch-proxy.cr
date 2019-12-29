@@ -6,7 +6,7 @@ require "./switch-proxy_helper.cr"
 require "./configs.cr"
 
 module Switch::Proxy
-  VERSION = "0.1.0"
+  VERSION = "0.2.3"
 
   class MyCli < Clim
     main do
@@ -126,11 +126,11 @@ module Switch::Proxy
       sub "internal_commands" do
         desc "This is a command used for internal processing."
         usage "swpro internal_commands [command]"
-        
+
         run do |opts, args, io|
           io.puts opts.help_string
         end
-        
+
         sub "cp_json" do
           desc "copy json to ~/.swpro.json"
           usage "swpro cp_json"

@@ -57,7 +57,7 @@
         }
     }
 }, {
-    "cmd_name": "bash",
+    "cmd_name": "bash_lowercase",
     "conf_path": {
         "system": "",
         "user": "~/.bashrc"
@@ -66,22 +66,51 @@
     "keys": {
         "http_proxy": {
             "enable_set": {
-                "regex": ".*http_proxy=",
-                "string": "http_proxy="
+                "regex": ".*export http_proxy=",
+                "string": "export http_proxy="
             },
             "disable_set": {
-                "regex": "#.*http_proxy=",
-                "string": "# http_proxy="
+                "regex": "#.*export http_proxy=",
+                "string": "# export http_proxy="
             }
         },
         "https_proxy": {
             "enable_set": {
-                "regex": ".*http_proxy=",
-                "string": "http_proxy="
+                "regex": ".*export https_proxy=",
+                "string": "export https_proxy="
             },
             "disable_set": {
-                "regex": "#.*http_proxy=",
-                "string": "# http_proxy="
+                "regex": "#.*export https_proxy=",
+                "string": "# export https_proxy="
+            }
+        }
+    }
+}, {
+    "cmd_name": "bash_uppercase",
+    "conf_path": {
+        "system": "",
+        "user": "~/.bashrc"
+    },
+    "row_end": "",
+    "keys": {
+        "http_proxy": {
+            "enable_set": {
+                "regex": ".*export HTTP_PROXY=",
+                "string": "export HTTP_PROXY="
+            },
+            "disable_set": {
+                "regex": "#.*export HTTP_PROXY=",
+                "string": "# export HTTP_PROXY="
+            }
+        },
+        "https_proxy": {
+            "enable_set": {
+                "regex": ".*export HTTPS_PROXY=",
+                "string": "export HTTPS_PROXY="
+            },
+            "disable_set": {
+                "regex": "#.*export HTTPS_PROXY=",
+                "string": "# export HTTPS_PROXY="
             }
         }
     }
