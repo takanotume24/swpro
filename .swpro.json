@@ -114,4 +114,33 @@
             }
         }
     }
+}, {
+    "cmd_name": "curl",
+    "conf_path": {
+        "system": "",
+        "user": "~/.curlrc"
+    },
+    "row_end": "",
+    "keys": {
+        "http_proxy": {
+            "enable_set": {
+                "regex": ".*proxy=",
+                "string": "proxy="
+            },
+            "disable_set": {
+                "regex": "#.*proxy=",
+                "string": "# proxy="
+            }
+        },
+        "https_proxy": {
+            "enable_set": {
+                "regex": ".*proxy=",
+                "string": "proxy="
+            },
+            "disable_set": {
+                "regex": "#.*proxy=",
+                "string": "# proxy="
+            }
+        }
+    }
 }]
