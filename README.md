@@ -11,7 +11,7 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 <br/>
 
 ## Installation
-### [手順1]インストール
+### [手順1]実行ファイルを用意する
 - #### 方法1 : [おすすめ]このレポジトリをクローンする
    ```
    $ git clone https://github.com/takanotume24/swpro.git
@@ -33,10 +33,11 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
    ```
    を実行すると､実行可能ファイル(bin/swpro)が生成されます｡
 
-### [手順2]コンフィグファイルを``~/.swpro.json``へ設置する
+### [手順2]コンフィグファイルをダウンロードし､インストールする
    設定済みコンフィグファイルを  [ダウンロード](https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json)し､``~/.swpro.json``へコピーします｡
    ```
    $ wget https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json -O ~/.swpro.json
+   $ ./bin/swpro install
    ```
 
 <br/>
@@ -74,60 +75,8 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 
 
 ### ``.config.json``のフォーマットについて
-
-```
-[{
-    "cmd_name": "apt",
-    "conf_path": "/etc/apt/apt.conf",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": ".*Acquire::http::Proxy",
-                "string": "Acquire::http::Proxy"
-            },
-            "disable_set": {
-                "regex": ".*#.*Acquire::http::Proxy",
-                "string": "# Acquire::http::Proxy"
-            }
-        },
-        "https_proxy": {
-            "enable_set": {
-                "regex": ".*Acquire::https::Proxy",
-                "string": "Acquire::https::Proxy"
-            },
-            "disable_set": {
-                "regex": ".*#.*Acquire::https::Proxy",
-                "string": "# Acquire::https::Proxy"
-            }
-        }
-    }
-}, {
-    "cmd_name": "wget",
-    "conf_path": "~/.wgetrc",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": ".*http_proxy=",
-                "string": "http_proxy="
-            },
-            "disable_set": {
-                "regex": ".*#.*http_proxy=",
-                "string": "# http_proxy="
-            }
-        },
-        "https_proxy": {
-            "enable_set": {
-                "regex": ".*https_proxy=",
-                "string": "https_proxy="
-            },
-            "disable_set": {
-                "regex": ".*#.*https_proxy=",
-                "string": "# https_proxy="
-            }
-        }
-    }
-}]
-```
+以下を参照してください｡  
+https://github.com/takanotume24/swpro/blob/master/.swpro.json
 
 <br/>
 
