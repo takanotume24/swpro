@@ -113,34 +113,53 @@ module Switch::Proxy
         end
       end
 
-      sub "cp_json" do
-        desc "copy json to ~/.swpro.json"
-        usage "swpro cp_json"
+      sub "install" do
+        desc "install swpro to system"
+        usage "sudo swpro install"
 
         run do |opts, args, io|
-          src = Path["./.swpro.json"].normalize.expand(home: true).to_s
-          dest = Path["~/.swpro.json"].normalize.expand(home: true).to_s
-          FileUtils.cp src_path: src, dest: dest
+          Switch::Proxy::MyCli.start(["internal_commands", "symlink"], io: io)
+          Switch::Proxy::MyCli.start(["internal_commands", "cp_json"], io: io)
         end
       end
 
-      sub "symlink" do
-        desc "create symlink."
-        usage "swpro symlink"
-
+      sub "internal_commands" do
+        desc "This is a command used for internal processing."
+        usage "swpro internal_commands [command]"
+        
         run do |opts, args, io|
-          check_arg_num opts, args, num = 0
-          new_path = Path["/bin/swpro"].normalize.expand(home: true).to_s
-          old_path = Path["./bin/swpro"].normalize.expand(home: true).to_s
-          if File.file? new_path
-            io.puts "既にシンボリックリンクが存在します"
-            return -1
+          io.puts opts.help_string
+        end
+        
+        sub "cp_json" do
+          desc "copy json to ~/.swpro.json"
+          usage "swpro cp_json"
+
+          run do |opts, args, io|
+            src = Path["./.swpro.json"].normalize.expand(home: true)
+            dest = Path["~/.swpro.json"].normalize.expand(home: true)
+            cp src: src, dest: dest, io: io
           end
-          if File.file? old_path
-            io.puts "#{old_path}が存在しません"
-            return -1
+        end
+
+        sub "symlink" do
+          desc "create symlink."
+          usage "swpro symlink"
+
+          run do |opts, args, io|
+            check_arg_num opts, args, num = 0
+            new_path = Path["/bin/swpro"].normalize.expand(home: true).to_s
+            old_path = Path["./bin/swpro"].normalize.expand(home: true).to_s
+            if File.file? new_path
+              io.puts "既にシンボリックリンクが存在します"
+              return -1
+            end
+            if File.file? old_path
+              io.puts "#{old_path}が存在しません"
+              return -1
+            end
+            File.symlink old_path, new_path
           end
-          File.symlink old_path, new_path
         end
       end
     end

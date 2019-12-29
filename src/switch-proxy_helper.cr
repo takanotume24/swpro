@@ -22,11 +22,12 @@ def check_arg_num(opts, args, num, io : IO = STDOUT)
   end
 end
 
-def check_file_exists_only_check(path : Path, io : IO = STDOUT)
+def check_file_exists_only_check(path : Path, io : IO = STDOUT) : Bool
   if (!File.file? path)
-    io.puts "#{path}が存在しません。swpro setを実行してください"
-    abort
+    io.puts "#{path}が存在しません"
+    return false
   end
+  return true
 end
 
 def check_file_exists(path : Path, io : IO = STDOUT)
@@ -119,4 +120,21 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
   end
 
   return result
+end
+
+def cp(src : Path, dest : Path, io : IO)
+  if File.file? dest
+    io.printf "既に#{dest}は存在します｡#{src}で上書きしますか?(y/n)"
+    ans = read_line
+
+    case ans
+    when "y"
+    else
+      io.puts "キャンセルしました"
+      return
+    end
+  end
+
+  FileUtils.cp src_path: src.to_s, dest: dest.to_s
+  io.puts "#{src}を#{dest}へコピーしました"
 end
