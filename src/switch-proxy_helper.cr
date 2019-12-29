@@ -52,11 +52,12 @@ def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : St
 end
 
 def set_value(path : Path, content : String, config : OptionSet, url : String, file_end : String, io : IO = STDOUT) : String
-  regex = Regex.new(config.enable_set.regex + ".*")
+  option = Regex::Options::MULTILINE
+  regex = Regex.new(config.enable_set.regex, option)
   match_data = content.scan(regex)
 
   if match_data.size == 0
-    new_line = "#{config.enable_set.string} #{url};\n"
+    new_line = "#{config.enable_set.string} #{url} #{file_end}\n"
     content += new_line
     io.puts "追加しました｡: #{new_line}"
     return content

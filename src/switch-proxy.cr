@@ -37,8 +37,9 @@ module Switch::Proxy
           check_writable path
 
           content = File.read path
-          content = content.gsub Regex.new(config.keys.http_proxy.disable_set.regex), config.keys.http_proxy.enable_set.string
-          content = content.gsub Regex.new(config.keys.https_proxy.disable_set.regex), config.keys.https_proxy.enable_set.string
+          option = Regex::Options::MULTILINE
+          content = content.gsub Regex.new(config.keys.http_proxy.disable_set.regex, option), config.keys.http_proxy.enable_set.string
+          content = content.gsub Regex.new(config.keys.https_proxy.disable_set.regex, option), config.keys.https_proxy.enable_set.string
 
           File.write(path, content)
           io.puts "#{_command}のプロキシ設定を有効化しました｡ (^_^)"
@@ -63,8 +64,9 @@ module Switch::Proxy
           check_writable path
 
           content = File.read path
-          content = content.gsub Regex.new(config.keys.http_proxy.enable_set.regex), config.keys.http_proxy.disable_set.string
-          content = content.gsub Regex.new(config.keys.https_proxy.enable_set.regex), config.keys.https_proxy.disable_set.string
+          option = Regex::Options::MULTILINE
+          content = content.gsub Regex.new(config.keys.http_proxy.enable_set.regex, option), config.keys.http_proxy.disable_set.string
+          content = content.gsub Regex.new(config.keys.https_proxy.enable_set.regex, option), config.keys.https_proxy.disable_set.string
 
           File.write(path, content)
           io.puts "#{_command}のプロキシ設定を無効化しました｡ (^_^)"

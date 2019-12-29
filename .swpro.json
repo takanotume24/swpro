@@ -8,21 +8,21 @@
     "keys": {
         "http_proxy": {
             "enable_set": {
-                "regex": ".*Acquire::http::Proxy",
+                "regex": "^ *Acquire::http::Proxy",
                 "string": "Acquire::http::Proxy"
             },
             "disable_set": {
-                "regex": ".*#.*Acquire::http::Proxy",
+                "regex": "^ *# *Acquire::http::Proxy",
                 "string": "# Acquire::http::Proxy"
             }
         },
         "https_proxy": {
             "enable_set": {
-                "regex": ".*Acquire::https::Proxy",
+                "regex": "^ *Acquire::https::Proxy",
                 "string": "Acquire::https::Proxy"
             },
             "disable_set": {
-                "regex": ".*#.*Acquire::https::Proxy",
+                "regex": "^ *# *Acquire::https::Proxy",
                 "string": "# Acquire::https::Proxy"
             }
         }
@@ -37,21 +37,21 @@
     "keys": {
         "http_proxy": {
             "enable_set": {
-                "regex": ".*http_proxy=",
+                "regex": "^ *http_proxy *=",
                 "string": "http_proxy="
             },
             "disable_set": {
-                "regex": ".*#.*http_proxy=",
+                "regex": "^ *#.*http_proxy *=",
                 "string": "# http_proxy="
             }
         },
         "https_proxy": {
             "enable_set": {
-                "regex": ".*https_proxy=",
+                "regex": "^ *https_proxy *=",
                 "string": "https_proxy="
             },
             "disable_set": {
-                "regex": ".*#.*https_proxy=",
+                "regex": "^ *#.*https_proxy *=",
                 "string": "# https_proxy="
             }
         }
@@ -66,21 +66,21 @@
     "keys": {
         "http_proxy": {
             "enable_set": {
-                "regex": ".*export http_proxy=",
+                "regex": "^ *export http_proxy=",
                 "string": "export http_proxy="
             },
             "disable_set": {
-                "regex": "#.*export http_proxy=",
+                "regex": "^ *# *export http_proxy=",
                 "string": "# export http_proxy="
             }
         },
         "https_proxy": {
             "enable_set": {
-                "regex": ".*export https_proxy=",
+                "regex": "^ *export https_proxy=",
                 "string": "export https_proxy="
             },
             "disable_set": {
-                "regex": "#.*export https_proxy=",
+                "regex": "^ *# *export https_proxy=",
                 "string": "# export https_proxy="
             }
         }
@@ -95,21 +95,21 @@
     "keys": {
         "http_proxy": {
             "enable_set": {
-                "regex": ".*export HTTP_PROXY=",
+                "regex": "^ *export HTTP_PROXY=",
                 "string": "export HTTP_PROXY="
             },
             "disable_set": {
-                "regex": "#.*export HTTP_PROXY=",
+                "regex": "^ *# *export HTTP_PROXY=",
                 "string": "# export HTTP_PROXY="
             }
         },
         "https_proxy": {
             "enable_set": {
-                "regex": ".*export HTTPS_PROXY=",
+                "regex": "^ *export HTTPS_PROXY=",
                 "string": "export HTTPS_PROXY="
             },
             "disable_set": {
-                "regex": "#.*export HTTPS_PROXY=",
+                "regex": "^ *# *export HTTPS_PROXY=",
                 "string": "# export HTTPS_PROXY="
             }
         }
@@ -124,22 +124,51 @@
     "keys": {
         "http_proxy": {
             "enable_set": {
-                "regex": ".*proxy=",
+                "regex": "^ *proxy=",
                 "string": "proxy="
             },
             "disable_set": {
-                "regex": "#.*proxy=",
+                "regex": "^ *# *proxy=",
                 "string": "# proxy="
             }
         },
         "https_proxy": {
             "enable_set": {
-                "regex": ".*proxy=",
+                "regex": "^ *proxy=",
                 "string": "proxy="
             },
             "disable_set": {
-                "regex": "#.*proxy=",
+                "regex": "^ *# *proxy=",
                 "string": "# proxy="
+            }
+        }
+    }
+}, {
+    "cmd_name": "git",
+    "conf_path": {
+        "system": "",
+        "user": "~/.gitconfig"
+    },
+    "row_end": "",
+    "keys": {
+        "http_proxy": {
+            "enable_set": {
+                "regex": "^ *\\[http\\][\\s\\S]*?proxy *=",
+                "string": "[http]\n\tproxy="
+            },
+            "disable_set": {
+                "regex": "^ *# *\\[http\\][\\s\\S]*?proxy *=",
+                "string": "#[http]\n\t # proxy="
+            }
+        },
+        "https_proxy": {
+            "enable_set": {
+                "regex": "^ *\\[https\\][\\s\\S]*?proxy *=",
+                "string": "[https]\n\tproxy="
+            },
+            "disable_set": {
+                "regex": "^ *# *\\[https\\][\\s\\S]*?proxy *=",
+                "string": "#[https]\n\t# proxy="
             }
         }
     }
