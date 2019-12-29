@@ -121,7 +121,7 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
     when config.conf_path.system.empty? && config.conf_path.user.empty?
       io.puts "[error] #{i}番目のconf_path.systemとconf_path.userがemptyです"
     else
-      io.puts "#{i}番目に問題はありませんでした"
+      io.puts "#{i}番目,#{config.cmd_name}に問題はありませんでした"
       result = true
     end
     i += 1
