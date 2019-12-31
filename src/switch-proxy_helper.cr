@@ -146,3 +146,13 @@ def cp(src : Path, dest : Path, io : IO)
   FileUtils.cp src_path: src.to_s, dest: dest.to_s
   io.puts "#{src}を#{dest}へコピーしました"
 end
+
+def read_json(path : Path, io : IO) : Array(Config)?
+  begin
+     return Array(Config).from_json(File.read path)
+  rescue ex
+    io.puts "#{path}の読み込みに失敗しました｡jsonファイルのフォーマットを確認してください"
+    io.puts ex.message
+    return nil
+  end
+end

@@ -28,7 +28,8 @@ module Switch::Proxy
           check_arg_num opts, args, num = 1
 
           _command = args[0]
-          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
+          configs = read_json SWPRO_CONF_PATH, io
+          configs = configs.nil? ? return -1 : configs
           index = search_command configs, _command
           config = index.nil? ? return -1 : configs[index]
           path = select_path config, opts
@@ -56,7 +57,8 @@ module Switch::Proxy
           check_arg_num opts, args, num = 1
 
           _command = args[0]
-          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
+          configs = read_json SWPRO_CONF_PATH, io
+          configs = configs.nil? ? return -1 : configs
           index = search_command configs, _command
           config = index.nil? ? return -1 : configs[index]
           path = select_path config, opts
@@ -86,7 +88,8 @@ module Switch::Proxy
           _url = args[1]
 
           content = nil
-          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
+          configs = read_json SWPRO_CONF_PATH, io
+          configs = configs.nil? ? return -1 : configs
           index = search_command configs, _command
 
           config = index.nil? ? return -1 : configs[index]
@@ -110,7 +113,8 @@ module Switch::Proxy
 
         run do |opts, args, io|
           check_arg_num opts, args, num = 0
-          configs = Array(Config).from_json(File.read SWPRO_CONF_PATH)
+          configs = read_json SWPRO_CONF_PATH, io
+          configs = configs.nil? ? return -1 : configs
           is_vaild_json? configs, io
         end
       end
