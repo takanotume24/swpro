@@ -17,7 +17,7 @@ jobs:
     - name: Run tests
       run: crystal spec
     - name : Bulid
-      run: crystal build --release src/switch-proxy.cr -o swpro
+      run: crystal build --release src/cli.cr -o swpro
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
