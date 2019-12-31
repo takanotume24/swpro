@@ -29,7 +29,7 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 - #### 方法3 : ソースコードからビルドする
    このレポジトリをクローンし､
    ```
-   $ crystal build src/swtch-proxy.cr -o bin/swpro
+   $ crystal build src/cli.cr -o bin/swpro
    ```
    を実行すると､実行可能ファイル(bin/swpro)が生成されます｡
 
