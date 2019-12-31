@@ -3,6 +3,7 @@ Crystalによって書かれたUbuntu用HTTPプロキシ設定CLIツールです
 jsonファイルにコマンドごとの変更点を記述することによって､任意のコマンドのHTTPプロキシ設定をサポートすることができます｡
 現在開発中のため､jsonファイル形式などが変更される可能性があります｡
 
+![](https://raw.githubusercontent.com/takanotume24/swpro/master/gif/set.gif)
 <br/>
 
 ## 背景
