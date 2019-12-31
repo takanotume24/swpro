@@ -160,7 +160,7 @@ module Switch::Proxy
               io.puts "既にシンボリックリンクが存在します"
               return -1
             end
-            if File.file? old_path
+            if !File.file? old_path
               io.puts "#{old_path}が存在しません"
               return -1
             end
