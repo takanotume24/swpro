@@ -4,7 +4,7 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 現在開発中のため､jsonファイル形式などが変更される可能性があります｡
 <br/>
 
-# demo
+## demo
 ### wget  
 ![](https://raw.githubusercontent.com/takanotume24/swpro/master/gif/set.gif)
 ### apt  
