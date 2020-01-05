@@ -57,7 +57,7 @@ def set_value(path : Path, content : String, config : OptionSet, url : String, f
   match_data = content.scan(regex)
 
   if match_data.size == 0
-    new_line = "#{config.enable_set.string} #{url} #{file_end}\n"
+    new_line = "#{config.enable_set.string} \"#{url}\" #{file_end}\n"
     content += new_line
     io.puts "追加しました｡: #{new_line}"
     return content
@@ -71,7 +71,7 @@ def set_value(path : Path, content : String, config : OptionSet, url : String, f
       return content
     end
 
-    content = content.gsub(regex, "#{config.enable_set.string} #{url}")
+    content = content.gsub(regex, "#{config.enable_set.string} \"#{url}\"")
     io.puts "書き換えました｡"
   end
 
@@ -149,7 +149,7 @@ end
 
 def read_json(path : Path, io : IO) : Array(Config)?
   begin
-     return Array(Config).from_json(File.read path)
+    return Array(Config).from_json(File.read path)
   rescue ex
     io.puts "#{path}の読み込みに失敗しました｡jsonファイルのフォーマットを確認してください"
     io.puts ex.message

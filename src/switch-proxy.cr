@@ -21,15 +21,31 @@ module Switch::Proxy
       sub "enable" do
         option "--system", type: Bool, desc: "applay for system."
         option "--user", type: Bool, desc: "applay for user."
+        option "--all", type: Bool, desc: "applay proxy setting to all commands."
         desc "enable proxy setting."
         usage "swpro enable [command]"
 
         run do |opts, args, io|
-          check_arg_num opts, args, num = 1
+          if opts.all
+            check_arg_num opts, args, num = 0
+            _command = nil
+          else
+            check_arg_num opts, args, num = 1
+            _command = args[0]
+          end
 
-          _command = args[0]
           configs = read_json SWPRO_CONF_PATH, io
           configs = configs.nil? ? return -1 : configs
+
+          if opts.all
+            configs.each do |config|
+              Switch::Proxy::MyCli.start(["enable", config.cmd_name.to_s], io: io)
+            end
+            return 1
+          end
+
+          _command = _command.nil? ? return -1 : _command
+
           index = search_command configs, _command
           config = index.nil? ? return -1 : configs[index]
           path = select_path config, opts
@@ -50,15 +66,29 @@ module Switch::Proxy
       sub "disable" do
         option "--system", type: Bool, desc: "applay for system."
         option "--user", type: Bool, desc: "applay for user."
+        option "--all", type: Bool, desc: "applay proxy setting to all commands."
+
         desc "disable proxy setting."
         usage "swpro disable [command]"
 
         run do |opts, args, io|
-          check_arg_num opts, args, num = 1
-
-          _command = args[0]
+          if opts.all
+            check_arg_num opts, args, num = 0
+            _command = nil
+          else
+            check_arg_num opts, args, num = 1
+            _command = args[0]
+          end
           configs = read_json SWPRO_CONF_PATH, io
           configs = configs.nil? ? return -1 : configs
+          if opts.all
+            configs.each do |config|
+              Switch::Proxy::MyCli.start(["disable", config.cmd_name.to_s], io: io)
+            end
+            return 1
+          end
+
+          _command = _command.nil? ? return -1 : _command
           index = search_command configs, _command
           config = index.nil? ? return -1 : configs[index]
           path = select_path config, opts
@@ -78,6 +108,8 @@ module Switch::Proxy
       sub "set" do
         option "--system", type: Bool, desc: "applay for system."
         option "--user", type: Bool, desc: "applay for user."
+        option "--all", type: Bool, desc: "applay proxy setting to all commands."
+
         desc "set configs."
         usage "swpro set [command] [proxy server uri]"
 
@@ -170,4 +202,8 @@ module Switch::Proxy
       end
     end
   end
+end
+
+macro nil_check(name)
+  
 end
