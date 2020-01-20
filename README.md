@@ -1,7 +1,9 @@
+日本語のREADMEは https://github.com/takanotume24/swpro/blob/master/README_JA.md を参照してください。
+
 # swpro ![](https://github.com/takanotume24/swpro/workflows/Crystal%20CI/badge.svg)
-Crystalによって書かれたUbuntu用HTTPプロキシ設定CLIツールです｡    
-jsonファイルにコマンドごとの変更点を記述することによって､任意のコマンドのHTTPプロキシ設定をサポートすることができます｡
-現在開発中のため､jsonファイル形式などが変更される可能性があります｡
+It is an HTTP proxy setting CLI tool for Ubuntu. It supports any software that describes proxy settings in a configuration file.  
+By describing changes for each command in the json file, it is possible to support HTTP proxy settings for any command.  
+Since this software is currently under development, the json file format may be changed.  
 <br/>
 
 ## demo
@@ -11,38 +13,38 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 ![](https://raw.githubusercontent.com/takanotume24/swpro/master/gif/apt.gif)
 <br/>
 
-## 背景
-学校･職場などでのネットワークにHTTPプロキシサーバが設置されている環境下で､Ubuntuマシンを使おうとするとそれぞれのコマンドにHTTPプロキシの設定を適用しなければいけません｡その際､コマンドごとにHTTPプロキシの設定の仕方はまちまちで､設定のたびに設定方法を調べる必要がありました｡swproはその設定方法の差異を吸収し操作を統一します｡
-
+## Background of development
+When using an Ubuntu machine in an environment where an HTTP proxy server is installed in a network such as a school or workplace, the HTTP proxy settings must be applied to each command.   
+The way to set the proxy was different, and it was necessary to check the setting method every time. ``swpro`` absorbs the difference of the setting method and unifies the operation.
 <br/>
 
 ## Installation
-### [手順1]実行ファイルを用意する
-- #### 方法1 : [おすすめ]このレポジトリをクローンする
+### [Step 1]Prepare executable file
+- #### Method 1 : [Recommended]Clone this repository
    ```
    $ git clone https://github.com/takanotume24/swpro.git
    ```
-   ``./bin/swpro``が実行ファイルです｡
+   `` ./bin/swpro`` is the executable file.
 
-   以下を実行するとswproアップデートすることができます｡
+   You can update swpro by running:
    ```
    $ git pull
    ```
 
-- #### 方法2 : コンパイル済みバイナリ単体をダウンロードする
-   https://github.com/takanotume24/swpro/releases にコンパイル済みバイナリを公開しています｡
+- #### Method 2 : Download the compiled binary
+   We publish the compiled binary in https://github.com/takanotume24/swpro/releases
 
-- #### 方法3 : ソースコードからビルドする
-   このレポジトリをクローンし､
+- #### Method 3 : Build from source code
+   Clone this repository,
    ```
    $ shards
    $ mkdir bin
    $ crystal build src/cli.cr -o bin/swpro
    ```
-   を実行すると､実行可能ファイル(bin/swpro)が生成されます｡
+   Executing will generate an executable file (``bin/swpro``).
 
-### [手順2]コンフィグファイルをダウンロードし､インストールする
-   設定済みコンフィグファイルを  [ダウンロード](https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json)し､``~/.swpro.json``へコピーします｡
+### [Step 1]Download and install config file
+   [Download]((https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json) the configured config file and copy it to ``~/.swpro.json``.
    ```
    $ wget https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json -O ~/.swpro.json
    $ ./bin/swpro install
@@ -52,40 +54,40 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 
 
 ## Usage
-### コマンド使用方法
+### Command usage
 
 
-- #### コマンドに対してプロキシサーバを登録する
+- #### Register a proxy server for commands
    ```
    swpro set [command] [url]
    ```
-   例:``wget``に``http://proxy.example.com:8080``をHTTPプロキシサーバとして登録する｡  
+   An example: Register ``http://proxy.example.com:8080`` as an HTTP proxy server in ``wget``
    ```
    swpro set wget http://proxy.example.com:8080
    ```
-- #### コマンドに対してプロキシを無効化する
+- #### Disable proxy for commands
    ```
    swpro disable [command]
    ```
-   例:``wget``のHTTPプロキシを無効化する｡
+   An example: Disable HTTP proxy for ``wget``
    ```
    swpro disable wget
    ```
-- #### コマンドに対してプロキシを有効化する
+- #### Enable proxy for commands
    ```
    swpro enable [command]
    ```
-   例:``wget``のHTTPプロキシを有効化する｡
+   An example: Enable HTTP proxy for ``wget``
    ```
    swpro enable wget
    ```
 <br/>
 
 
-### ``.config.json``のフォーマットについて
-以下を参照してください｡  
-- [サンプル](https://github.com/takanotume24/swpro/blob/master/.swpro.json)
-- [記述ルール](https://github.com/takanotume24/swpro/wiki/.swpro.json%E3%81%AE%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
+### About the format of ``.config.json``
+Please refer to the following.
+- [Sample](https://github.com/takanotume24/swpro/blob/master/.swpro.json)
+- [Description rules](https://github.com/takanotume24/swpro/wiki/.swpro.json%E3%81%AE%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
 
 <br/>
 
@@ -101,8 +103,10 @@ TODO: Write development instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+
 <br/>
 
 ## Contributors
 
-- [your-name-here](https://github.com/your-github-user) - creator and maintainer
+- [takanotume24](https://github.com/takanotume24) - creator and maintainer
