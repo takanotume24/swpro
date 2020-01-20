@@ -19,7 +19,7 @@ The way to set the proxy was different, and it was necessary to check the settin
 <br/>
 
 ## Installation
-### [Step 1]Prepare executable file
+### [Step 1] Prepare executable file
 - #### Method 1 : [Recommended]Clone this repository
    ```
    $ git clone https://github.com/takanotume24/swpro.git
@@ -43,7 +43,7 @@ The way to set the proxy was different, and it was necessary to check the settin
    ```
    Executing will generate an executable file (``bin/swpro``).
 
-### [Step 2]Download and install config file
+### [Step 2] Download and install config file
    [Download]((https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json) the configured config file and copy it to ``~/.swpro.json``.
    ```
    $ wget https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json -O ~/.swpro.json
