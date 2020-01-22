@@ -84,7 +84,7 @@ The way to set the proxy was different, and it was necessary to check the settin
 <br/>
 
 
-### About the format of ``.config.json``
+### About the format of ``.swpro.json``
 Please refer to the following.
 - [Sample](https://github.com/takanotume24/swpro/blob/master/.swpro.json)
 - [Description rules](https://github.com/takanotume24/swpro/wiki/.swpro.json%E3%81%AE%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)

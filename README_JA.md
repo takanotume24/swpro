@@ -82,7 +82,7 @@ jsonファイルにコマンドごとの変更点を記述することによっ�
 <br/>
 
 
-### ``.config.json``のフォーマットについて
+### ``.swpro.json``のフォーマットについて
 以下を参照してください｡  
 - [サンプル](https://github.com/takanotume24/swpro/blob/master/.swpro.json)
 - [記述ルール](https://github.com/takanotume24/swpro/wiki/.swpro.json%E3%81%AE%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
