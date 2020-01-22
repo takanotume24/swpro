@@ -59,7 +59,7 @@ module Switch::Proxy
           content = content.gsub Regex.new(config.keys.https_proxy.disable_set.regex, option), config.keys.https_proxy.enable_set.string
 
           File.write(path, content)
-          io.puts "#{_command}のプロキシ設定を有効化しました｡ (^_^)"
+          io.puts "Enabled proxy settings for #{_command}."
         end
       end
 
@@ -101,7 +101,7 @@ module Switch::Proxy
           content = content.gsub Regex.new(config.keys.https_proxy.enable_set.regex, option), config.keys.https_proxy.disable_set.string
 
           File.write(path, content)
-          io.puts "#{_command}のプロキシ設定を無効化しました｡ (^_^)"
+          io.puts "Disabled proxy settings for #{_command}."
         end
       end
 
@@ -135,7 +135,7 @@ module Switch::Proxy
 
           File.write(path, content)
 
-          io.puts "プロキシ設定が完了しました｡ (^_^)"
+          io.puts "Proxy settings are complete."
         end
       end
 
@@ -189,11 +189,11 @@ module Switch::Proxy
             new_path = Path["/bin/swpro"].normalize.expand(home: true).to_s
             old_path = Path["./bin/swpro"].normalize.expand(home: true).to_s
             if File.file? new_path
-              io.puts "既にシンボリックリンクが存在します"
+              io.puts "Symbolic link already exists."
               return -1
             end
             if !File.file? old_path
-              io.puts "#{old_path}が存在しません"
+              io.puts "#{old_path} does not exist."
               return -1
             end
             File.symlink old_path, new_path
@@ -207,3 +207,5 @@ end
 macro nil_check(name)
   
 end
+
+1

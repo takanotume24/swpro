@@ -2,21 +2,21 @@ require "./configs.cr"
 
 def check_writable(path : Path, io : IO = STDOUT)
   if (!File.writable? path)
-    io.puts "#{path}に書き込みできません (>_<) 権限を確認してください"
+    io.puts "Cannot write to #{path}. Check permissions."
     abort
   end
 end
 
 def check_readable(path : Path, io : IO = STDOUT)
   if (!File.readable? path)
-    io.puts "#{path}を読めません (>_<) 権限を確認してください"
+    io.puts "Unable to read #{path}. Check permissions."
     abort
   end
 end
 
 def check_arg_num(opts, args, num, io : IO = STDOUT)
   if (args.size < num)
-    io.puts "引数を確認してください (>_<)"
+    io.puts "Check the arguments."
     io.puts opts.help_string
     abort
   end
@@ -24,7 +24,7 @@ end
 
 def check_file_exists_only_check(path : Path, io : IO = STDOUT) : Bool
   if (!File.file? path)
-    io.puts "#{path}が存在しません"
+    io.puts "#{path} does not exist."
     return false
   end
   return true
@@ -34,7 +34,7 @@ def check_file_exists(path : Path, io : IO = STDOUT)
   if (!File.file? path)
     file = File.new(path, "w")
     file.close
-    io.puts "#{path}が存在しなかったので、新規作成しました"
+    io.puts "#{path} did not exist, so it was created."
   end
 end
 
@@ -59,20 +59,20 @@ def set_value(path : Path, content : String, config : OptionSet, url : String, f
   if match_data.size == 0
     new_line = "#{config.enable_set.string}\"#{url}\"#{file_end}\n"
     content += new_line
-    io.puts "追加しました｡: #{new_line}"
+    io.puts "Added: #{new_line}"
     return content
   end
 
   if match_data.size > 0
-    printf "既に#{match_data}が存在します 書き換えますか(y/n)?"
+    printf "#{match_data} already exists. Do you want to rewrite? (y/n)?"
 
     if read_line != "y"
-      io.puts "書き換えませんでした｡"
+      io.puts "Did not rewrite."
       return content
     end
 
     content = content.gsub(regex, "#{config.enable_set.string}\"#{url}\"")
-    io.puts "書き換えました｡"
+    io.puts "Rewritten."
   end
 
   return content
@@ -87,7 +87,7 @@ def search_command(configs : Array(Config), command : String, io : IO = STDOUT) 
     i += 1
   end
   if i == configs.size
-    io.puts "#{command}には対応していません"
+    io.puts "#{command} is not supported."
     return nil
   end
   return i
@@ -117,11 +117,11 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
   configs.each do |config|
     case
     when config.cmd_name.to_s.empty?
-      io.puts "[error] #{i}番目のcmd_nameがemptyです"
+      io.puts "[error] #{i}th cmd_name is empty."
     when config.conf_path.system.empty? && config.conf_path.user.empty?
-      io.puts "[error] #{i}番目のconf_path.systemとconf_path.userがemptyです"
+      io.puts "[error] #{i}th conf_path.system and conf_path.user are empty"
     else
-      io.puts "#{i}番目,#{config.cmd_name}に問題はありませんでした"
+      io.puts "#{i}th,\tThere was no problem with #{config.cmd_name}."
       result = true
     end
     i += 1
@@ -132,26 +132,26 @@ end
 
 def cp(src : Path, dest : Path, io : IO)
   if File.file? dest
-    io.printf "既に#{dest}は存在します｡#{src}で上書きしますか?(y/n)"
+    io.printf "#{dest} already exists. Overwrite with #{src} ?(y/n)"
     ans = read_line
 
     case ans
     when "y"
     else
-      io.puts "キャンセルしました"
+      io.puts "Canceled."
       return
     end
   end
 
   FileUtils.cp src_path: src.to_s, dest: dest.to_s
-  io.puts "#{src}を#{dest}へコピーしました"
+  io.puts "#{src} copied to #{dest}."
 end
 
 def read_json(path : Path, io : IO) : Array(Config)?
   begin
     return Array(Config).from_json(File.read path)
   rescue ex
-    io.puts "#{path}の読み込みに失敗しました｡jsonファイルのフォーマットを確認してください"
+    io.puts "Failed to read #{path}. Check the format of the json file."
     io.puts ex.message
     return nil
   end
