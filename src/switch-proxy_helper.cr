@@ -2,21 +2,21 @@ require "./configs.cr"
 
 def check_writable(path : Path, io : IO = STDOUT)
   if (!File.writable? path)
-    io.puts "Cannot write to #{path}. Check permissions."
+    io.puts "[error] Cannot write to #{path}. Check permissions."
     abort
   end
 end
 
 def check_readable(path : Path, io : IO = STDOUT)
   if (!File.readable? path)
-    io.puts "Unable to read #{path}. Check permissions."
+    io.puts "[error] Unable to read #{path}. Check permissions."
     abort
   end
 end
 
 def check_arg_num(opts, args, num, io : IO = STDOUT)
   if (args.size < num)
-    io.puts "Check the arguments."
+    io.puts "[error] Check the arguments."
     io.puts opts.help_string
     abort
   end
@@ -24,7 +24,7 @@ end
 
 def check_file_exists_only_check(path : Path, io : IO = STDOUT) : Bool
   if (!File.file? path)
-    io.puts "#{path} does not exist."
+    io.puts "[error] #{path} does not exist."
     return false
   end
   return true
@@ -151,7 +151,7 @@ def read_json(path : Path, io : IO) : Array(Config)?
   begin
     return Array(Config).from_json(File.read path)
   rescue ex
-    io.puts "Failed to read #{path}. Check the format of the json file."
+    io.puts "[error] Failed to read #{path}. Check the format of the json file."
     io.puts ex.message
     return nil
   end

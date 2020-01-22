@@ -207,7 +207,7 @@ module Switch::Proxy
               return -1
             end
             if !File.file? old_path
-              io.puts "#{old_path} does not exist."
+              io.puts "[error] #{old_path} does not exist."
               return -1
             end
             File.symlink old_path, new_path
