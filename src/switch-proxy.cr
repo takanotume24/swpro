@@ -114,14 +114,28 @@ module Switch::Proxy
         usage "swpro set [command] [proxy server uri]"
 
         run do |opts, args, io|
-          check_arg_num opts, args, num = 2
-
-          _command = args[0]
-          _url = args[1]
+          if opts.all
+            check_arg_num opts, args, num = 1
+            _command = nil
+            _url = args[0]
+          else
+            check_arg_num opts, args, num = 2
+            _command = args[0]
+            _url = args[1]
+          end
 
           content = nil
           configs = read_json SWPRO_CONF_PATH, io
           configs = configs.nil? ? return -1 : configs
+
+          if opts.all
+            configs.each do |config|
+              Switch::Proxy::MyCli.start(["set", config.cmd_name.to_s, _url], io: io)
+            end
+            return 1
+          end
+
+          _command = _command.nil? ? return -1 : _command
           index = search_command configs, _command
 
           config = index.nil? ? return -1 : configs[index]
@@ -203,9 +217,3 @@ module Switch::Proxy
     end
   end
 end
-
-macro nil_check(name)
-  
-end
-
-1
