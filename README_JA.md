@@ -1,4 +1,4 @@
-# swpro ![](https://github.com/takanotume24/swpro/workflows/Crystal%20CI/badge.svg)
+# swpro ![](https://github.com/takanotume24/swpro/workflows/Crystal%20CI/badge.svg)  ![](https://img.shields.io/github/issues/takanotume24/swpro) ![](https://img.shields.io/github/stars/takanotume24/swpro)
 Ubuntu用HTTPプロキシ設定CLIツールです｡コンフィグファイルにプロキシ設定を記述する、任意のソフトウェアに対応します。    
 jsonファイルにコマンドごとの変更点を記述することによって､任意のコマンドのHTTPプロキシ設定をサポートすることができます｡
 現在開発中のため､jsonファイル形式などが変更される可能性があります｡
