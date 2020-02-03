@@ -1,6 +1,6 @@
 日本語のREADMEは https://github.com/takanotume24/swpro/blob/master/README_JA.md を参照してください。
 
-# swpro ![](https://github.com/takanotume24/swpro/workflows/Crystal%20CI/badge.svg)
+# swpro ![](https://github.com/takanotume24/swpro/workflows/Crystal%20CI/badge.svg) ![](https://img.shields.io/github/issues/takanotume24/swpro) ![](https://img.shields.io/github/stars/takanotume24/swpro)
 It is an HTTP proxy setting CLI tool for Ubuntu. It supports any software that describes proxy settings in a configuration file.  
 By describing changes for each command in the json file, it is possible to support HTTP proxy settings for any command.  
 Since this software is currently under development, the json file format may be changed.  
