@@ -4,6 +4,13 @@ require "json"
 require "file_utils"
 require "./switch-proxy_helper.cr"
 require "./configs.cr"
+require "./commands/enable.cr"
+require "./commands/set.cr"
+require "./commands/disable.cr"
+require "./commands/check.cr"
+require "./commands/install.cr"
+require "./commands/internal_commands/cp_json.cr"
+require "./commands/internal_commands/symlink.cr"
 
 module Switch::Proxy
   VERSION = "0.2.3"
@@ -26,40 +33,7 @@ module Switch::Proxy
         usage "swpro enable [command]"
 
         run do |opts, args, io|
-          if opts.all
-            check_arg_num opts, args, num = 0
-            _command = nil
-          else
-            check_arg_num opts, args, num = 1
-            _command = args[0]
-          end
-
-          configs = read_json SWPRO_CONF_PATH, io
-          configs = configs.nil? ? return -1 : configs
-
-          if opts.all
-            configs.each do |config|
-              Switch::Proxy::MyCli.start(["enable", config.cmd_name.to_s], io: io)
-            end
-            return 1
-          end
-
-          _command = _command.nil? ? return -1 : _command
-
-          index = search_command configs, _command
-          config = index.nil? ? return -1 : configs[index]
-          path = select_path config, opts
-
-          check_file_exists_only_check path
-          check_writable path
-
-          content = File.read path
-          option = Regex::Options::MULTILINE
-          content = content.gsub Regex.new(config.keys.http_proxy.disable_set.regex, option), config.keys.http_proxy.enable_set.string
-          content = content.gsub Regex.new(config.keys.https_proxy.disable_set.regex, option), config.keys.https_proxy.enable_set.string
-
-          File.write(path, content)
-          io.puts "Enabled proxy settings for #{_command}."
+          enable opts, args, io
         end
       end
 
@@ -72,36 +46,7 @@ module Switch::Proxy
         usage "swpro disable [command]"
 
         run do |opts, args, io|
-          if opts.all
-            check_arg_num opts, args, num = 0
-            _command = nil
-          else
-            check_arg_num opts, args, num = 1
-            _command = args[0]
-          end
-          configs = read_json SWPRO_CONF_PATH, io
-          configs = configs.nil? ? return -1 : configs
-          if opts.all
-            configs.each do |config|
-              Switch::Proxy::MyCli.start(["disable", config.cmd_name.to_s], io: io)
-            end
-            return 1
-          end
-
-          _command = _command.nil? ? return -1 : _command
-          index = search_command configs, _command
-          config = index.nil? ? return -1 : configs[index]
-          path = select_path config, opts
-          check_file_exists_only_check path, io
-          check_writable path
-
-          content = File.read path
-          option = Regex::Options::MULTILINE
-          content = content.gsub Regex.new(config.keys.http_proxy.enable_set.regex, option), config.keys.http_proxy.disable_set.string
-          content = content.gsub Regex.new(config.keys.https_proxy.enable_set.regex, option), config.keys.https_proxy.disable_set.string
-
-          File.write(path, content)
-          io.puts "Disabled proxy settings for #{_command}."
+          disable opts, args, io
         end
       end
 
@@ -114,42 +59,7 @@ module Switch::Proxy
         usage "swpro set [command] [proxy server uri]"
 
         run do |opts, args, io|
-          if opts.all
-            check_arg_num opts, args, num = 1
-            _command = nil
-            _url = args[0]
-          else
-            check_arg_num opts, args, num = 2
-            _command = args[0]
-            _url = args[1]
-          end
-
-          content = nil
-          configs = read_json SWPRO_CONF_PATH, io
-          configs = configs.nil? ? return -1 : configs
-
-          if opts.all
-            configs.each do |config|
-              Switch::Proxy::MyCli.start(["set", config.cmd_name.to_s, _url], io: io)
-            end
-            return 1
-          end
-
-          _command = _command.nil? ? return -1 : _command
-          index = search_command configs, _command
-
-          config = index.nil? ? return -1 : configs[index]
-
-          path = select_path config, opts
-
-          check_file_exists path
-
-          check_writable path
-          content = set_proxy path, config, _url, io
-
-          File.write(path, content)
-
-          io.puts "Proxy settings are complete."
+          set opts, args, io
         end
       end
 
@@ -158,10 +68,7 @@ module Switch::Proxy
         usage "swpro check"
 
         run do |opts, args, io|
-          check_arg_num opts, args, num = 0
-          configs = read_json SWPRO_CONF_PATH, io
-          configs = configs.nil? ? return -1 : configs
-          is_vaild_json? configs, io
+          check opts, args, io
         end
       end
 
@@ -170,8 +77,7 @@ module Switch::Proxy
         usage "sudo swpro install"
 
         run do |opts, args, io|
-          Switch::Proxy::MyCli.start(["internal_commands", "symlink"], io: io)
-          Switch::Proxy::MyCli.start(["internal_commands", "cp_json"], io: io)
+          install opts, args, io
         end
       end
 
@@ -188,9 +94,7 @@ module Switch::Proxy
           usage "swpro cp_json"
 
           run do |opts, args, io|
-            src = Path["./.swpro.json"].normalize.expand(home: true)
-            dest = Path["~/.swpro.json"].normalize.expand(home: true)
-            cp src: src, dest: dest, io: io
+            cp_json opts, args, io
           end
         end
 
@@ -199,18 +103,7 @@ module Switch::Proxy
           usage "swpro symlink"
 
           run do |opts, args, io|
-            check_arg_num opts, args, num = 0
-            new_path = Path["/bin/swpro"].normalize.expand(home: true).to_s
-            old_path = Path["./bin/swpro"].normalize.expand(home: true).to_s
-            if File.file? new_path
-              io.puts "Symbolic link already exists."
-              return -1
-            end
-            if !File.file? old_path
-              io.puts "[error] #{old_path} does not exist."
-              return -1
-            end
-            File.symlink old_path, new_path
+            symlink opts, args, io
           end
         end
       end
