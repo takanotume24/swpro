@@ -30,6 +30,12 @@ The way to set the proxy was different, and it was necessary to check the settin
    ```
    $ git pull
    ```
+   
+   You can add proxy setting to ``git`` manually by following.
+   ```
+   $ git config --global http.proxy http://proxy.example.com:8080
+   $ git config --global https.proxy http://proxy.example.com:8080
+   ```
 
 - #### Method 2 : Download the compiled binary
    We publish the compiled binary in https://github.com/takanotume24/swpro/releases
