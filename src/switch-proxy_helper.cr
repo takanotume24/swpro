@@ -46,18 +46,18 @@ def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : St
   regex_set_http = config.keys.http_proxy
   regex_set_https = config.keys.https_proxy
 
-  content = set_value(path, content, regex_set_http, url, config.row_end, io)
-  content = set_value(path, content, regex_set_https, url, config.row_end, io)
+  content = set_value(path, content, regex_set_http, config.quotation, url, config.row_end, io)
+  content = set_value(path, content, regex_set_https, config.quotation, url, config.row_end, io)
   return content
 end
 
-def set_value(path : Path, content : String, config : OptionSet, url : String, file_end : String, io : IO = STDOUT) : String
+def set_value(path : Path, content : String, option_set : OptionSet, quotation : String, url : String, file_end : String, io : IO = STDOUT) : String
   option = Regex::Options::MULTILINE
-  regex = Regex.new(config.enable_set.regex, option)
+  regex = Regex.new(option_set.enable_set.regex, option)
   match_data = content.scan(regex)
 
   if match_data.size == 0
-    new_line = "#{config.enable_set.string}\"#{url}\"#{file_end}\n"
+    new_line = "#{option_set.enable_set.string} #{quotation}#{url}#{quotation} #{file_end}\n"
     content += new_line
     io.puts "Added: #{new_line}"
     return content
@@ -70,8 +70,9 @@ def set_value(path : Path, content : String, config : OptionSet, url : String, f
       io.puts "Did not rewrite."
       return content
     end
+    newline = "#{option_set.enable_set.string} #{quotation}#{url}#{quotation} #{file_end}\n"
 
-    content = content.gsub(regex, "#{config.enable_set.string}\"#{url}\"")
+    content = content.gsub(regex, newline)
     io.puts "Rewritten."
   end
 
@@ -117,11 +118,11 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
   configs.each do |config|
     case
     when config.cmd_name.to_s.empty?
-      io.puts "[error] #{i}th cmd_name is empty."
+      io.puts "[error] No.#{i} cmd_name is empty."
     when config.conf_path.system.empty? && config.conf_path.user.empty?
-      io.puts "[error] #{i}th conf_path.system and conf_path.user are empty"
+      io.puts "[error] No.#{i} conf_path.system and conf_path.user are empty"
     else
-      io.puts "#{i}th,\tThere was no problem with #{config.cmd_name}."
+      io.puts "No.#{i},\tThere was no problem with [#{config.cmd_name}]."
       result = true
     end
     i += 1

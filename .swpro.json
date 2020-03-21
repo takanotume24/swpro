@@ -1,175 +1,188 @@
-[{
-    "cmd_name": "apt",
-    "conf_path": {
-        "system": "/etc/apt/apt.conf",
-        "user": ""
-    },
-    "row_end": ";",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": "^ *Acquire::http::Proxy",
-                "string": "Acquire::http::Proxy"
-            },
-            "disable_set": {
-                "regex": "^ *# *Acquire::http::Proxy",
-                "string": "# Acquire::http::Proxy"
-            }
+[
+    {
+        "cmd_name": "apt",
+        "conf_path": {
+            "system": "/etc/apt/apt.conf",
+            "user": ""
         },
-        "https_proxy": {
-            "enable_set": {
-                "regex": "^ *Acquire::https::Proxy",
-                "string": "Acquire::https::Proxy"
+        "row_end": ";",
+        "quotation": "\"",
+        "keys": {
+            "http_proxy": {
+                "enable_set": {
+                    "regex": "^ *Acquire::http::Proxy",
+                    "string": "Acquire::http::Proxy"
+                },
+                "disable_set": {
+                    "regex": "^ *# *Acquire::http::Proxy",
+                    "string": "# Acquire::http::Proxy"
+                }
             },
-            "disable_set": {
-                "regex": "^ *# *Acquire::https::Proxy",
-                "string": "# Acquire::https::Proxy"
+            "https_proxy": {
+                "enable_set": {
+                    "regex": "^ *Acquire::https::Proxy",
+                    "string": "Acquire::https::Proxy"
+                },
+                "disable_set": {
+                    "regex": "^ *# *Acquire::https::Proxy",
+                    "string": "# Acquire::https::Proxy"
+                }
+            }
+        }
+    },
+    {
+        "cmd_name": "wget",
+        "conf_path": {
+            "system": "/etc/wgetrc",
+            "user": "~/.wgetrc"
+        },
+        "row_end": "",
+        "quotation": "",
+        "keys": {
+            "http_proxy": {
+                "enable_set": {
+                    "regex": "^ *http_proxy *=",
+                    "string": "http_proxy="
+                },
+                "disable_set": {
+                    "regex": "^ *#.*http_proxy *=",
+                    "string": "# http_proxy="
+                }
+            },
+            "https_proxy": {
+                "enable_set": {
+                    "regex": "^ *https_proxy *=",
+                    "string": "https_proxy="
+                },
+                "disable_set": {
+                    "regex": "^ *#.*https_proxy *=",
+                    "string": "# https_proxy="
+                }
+            }
+        }
+    },
+    {
+        "cmd_name": "bash_lowercase",
+        "conf_path": {
+            "system": "",
+            "user": "~/.bashrc"
+        },
+        "row_end": "",
+        "quotation": "\"",
+        "keys": {
+            "http_proxy": {
+                "enable_set": {
+                    "regex": "^ *export http_proxy=",
+                    "string": "export http_proxy="
+                },
+                "disable_set": {
+                    "regex": "^ *# *export http_proxy=",
+                    "string": "# export http_proxy="
+                }
+            },
+            "https_proxy": {
+                "enable_set": {
+                    "regex": "^ *export https_proxy=",
+                    "string": "export https_proxy="
+                },
+                "disable_set": {
+                    "regex": "^ *# *export https_proxy=",
+                    "string": "# export https_proxy="
+                }
+            }
+        }
+    },
+    {
+        "cmd_name": "bash_uppercase",
+        "conf_path": {
+            "system": "",
+            "user": "~/.bashrc"
+        },
+        "row_end": "",
+        "quotation": "\"",
+        "keys": {
+            "http_proxy": {
+                "enable_set": {
+                    "regex": "^ *export HTTP_PROXY=",
+                    "string": "export HTTP_PROXY="
+                },
+                "disable_set": {
+                    "regex": "^ *# *export HTTP_PROXY=",
+                    "string": "# export HTTP_PROXY="
+                }
+            },
+            "https_proxy": {
+                "enable_set": {
+                    "regex": "^ *export HTTPS_PROXY=",
+                    "string": "export HTTPS_PROXY="
+                },
+                "disable_set": {
+                    "regex": "^ *# *export HTTPS_PROXY=",
+                    "string": "# export HTTPS_PROXY="
+                }
+            }
+        }
+    },
+    {
+        "cmd_name": "curl",
+        "conf_path": {
+            "system": "",
+            "user": "~/.curlrc"
+        },
+        "row_end": "",
+        "quotation": "\"",
+        "keys": {
+            "http_proxy": {
+                "enable_set": {
+                    "regex": "^ *proxy=",
+                    "string": "proxy="
+                },
+                "disable_set": {
+                    "regex": "^ *# *proxy=",
+                    "string": "# proxy="
+                }
+            },
+            "https_proxy": {
+                "enable_set": {
+                    "regex": "^ *proxy=",
+                    "string": "proxy="
+                },
+                "disable_set": {
+                    "regex": "^ *# *proxy=",
+                    "string": "# proxy="
+                }
+            }
+        }
+    },
+    {
+        "cmd_name": "git",
+        "conf_path": {
+            "system": "",
+            "user": "~/.gitconfig"
+        },
+        "row_end": "",
+        "quotation": "\"",
+        "keys": {
+            "http_proxy": {
+                "enable_set": {
+                    "regex": "^ *\\[http\\][\\s\\S]*?proxy *=",
+                    "string": "[http]\n\tproxy="
+                },
+                "disable_set": {
+                    "regex": "^ *# *\\[http\\][\\s\\S]*?proxy *=",
+                    "string": "#[http]\n\t # proxy="
+                }
+            },
+            "https_proxy": {
+                "enable_set": {
+                    "regex": "^ *\\[https\\][\\s\\S]*?proxy *=",
+                    "string": "[https]\n\tproxy="
+                },
+                "disable_set": {
+                    "regex": "^ *# *\\[https\\][\\s\\S]*?proxy *=",
+                    "string": "#[https]\n\t# proxy="
+                }
             }
         }
     }
-}, {
-    "cmd_name": "wget",
-    "conf_path": {
-        "system": "/etc/wgetrc",
-        "user": "~/.wgetrc"
-    },
-    "row_end": "",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": "^ *http_proxy *=",
-                "string": "http_proxy="
-            },
-            "disable_set": {
-                "regex": "^ *#.*http_proxy *=",
-                "string": "# http_proxy="
-            }
-        },
-        "https_proxy": {
-            "enable_set": {
-                "regex": "^ *https_proxy *=",
-                "string": "https_proxy="
-            },
-            "disable_set": {
-                "regex": "^ *#.*https_proxy *=",
-                "string": "# https_proxy="
-            }
-        }
-    }
-}, {
-    "cmd_name": "bash_lowercase",
-    "conf_path": {
-        "system": "",
-        "user": "~/.bashrc"
-    },
-    "row_end": "",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": "^ *export http_proxy=",
-                "string": "export http_proxy="
-            },
-            "disable_set": {
-                "regex": "^ *# *export http_proxy=",
-                "string": "# export http_proxy="
-            }
-        },
-        "https_proxy": {
-            "enable_set": {
-                "regex": "^ *export https_proxy=",
-                "string": "export https_proxy="
-            },
-            "disable_set": {
-                "regex": "^ *# *export https_proxy=",
-                "string": "# export https_proxy="
-            }
-        }
-    }
-}, {
-    "cmd_name": "bash_uppercase",
-    "conf_path": {
-        "system": "",
-        "user": "~/.bashrc"
-    },
-    "row_end": "",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": "^ *export HTTP_PROXY=",
-                "string": "export HTTP_PROXY="
-            },
-            "disable_set": {
-                "regex": "^ *# *export HTTP_PROXY=",
-                "string": "# export HTTP_PROXY="
-            }
-        },
-        "https_proxy": {
-            "enable_set": {
-                "regex": "^ *export HTTPS_PROXY=",
-                "string": "export HTTPS_PROXY="
-            },
-            "disable_set": {
-                "regex": "^ *# *export HTTPS_PROXY=",
-                "string": "# export HTTPS_PROXY="
-            }
-        }
-    }
-}, {
-    "cmd_name": "curl",
-    "conf_path": {
-        "system": "",
-        "user": "~/.curlrc"
-    },
-    "row_end": "",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": "^ *proxy=",
-                "string": "proxy="
-            },
-            "disable_set": {
-                "regex": "^ *# *proxy=",
-                "string": "# proxy="
-            }
-        },
-        "https_proxy": {
-            "enable_set": {
-                "regex": "^ *proxy=",
-                "string": "proxy="
-            },
-            "disable_set": {
-                "regex": "^ *# *proxy=",
-                "string": "# proxy="
-            }
-        }
-    }
-}, {
-    "cmd_name": "git",
-    "conf_path": {
-        "system": "",
-        "user": "~/.gitconfig"
-    },
-    "row_end": "",
-    "keys": {
-        "http_proxy": {
-            "enable_set": {
-                "regex": "^ *\\[http\\][\\s\\S]*?proxy *=",
-                "string": "[http]\n\tproxy="
-            },
-            "disable_set": {
-                "regex": "^ *# *\\[http\\][\\s\\S]*?proxy *=",
-                "string": "#[http]\n\t # proxy="
-            }
-        },
-        "https_proxy": {
-            "enable_set": {
-                "regex": "^ *\\[https\\][\\s\\S]*?proxy *=",
-                "string": "[https]\n\tproxy="
-            },
-            "disable_set": {
-                "regex": "^ *# *\\[https\\][\\s\\S]*?proxy *=",
-                "string": "#[https]\n\t# proxy="
-            }
-        }
-    }
-}]
+]

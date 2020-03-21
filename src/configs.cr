@@ -35,6 +35,7 @@ class Config
     cmd_name: String,
     conf_path: ConfigPathSet,
     row_end: String,
+    quotation: String,
     keys: {type: Keyword, nilable: false},
   )
 end
