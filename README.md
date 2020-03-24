@@ -74,7 +74,7 @@ The way to set the proxy was different, and it was necessary to check the settin
    ```
    Disable the proxy settings for all registered commands
    ```
-   $ sudo swpro dsisable --all 
+   $ sudo swpro disable --all 
    ```
 <br/>
 
