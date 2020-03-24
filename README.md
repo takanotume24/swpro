@@ -19,42 +19,32 @@ The way to set the proxy was different, and it was necessary to check the settin
 <br/>
 
 ## Installation
-### [Step 1] Prepare executable file
-- #### Method 1 : [Recommended]Clone this repository
+- ### Method 1 : **[Recommended]** install with compiled binary
    ```
    $ git clone https://github.com/takanotume24/swpro.git
+   $ make install
    ```
-   `` ./bin/swpro`` is the executable file.
 
-   You can update swpro by running:
-   ```
-   $ git pull
-   ```
-   
-   You can add proxy setting to ``git`` manually by following.
+   [Tips] You can add proxy setting to ``git`` manually by following.
    ```
    $ git config --global http.proxy http://proxy.example.com:8080
    $ git config --global https.proxy http://proxy.example.com:8080
    ```
+</br>
 
-- #### Method 2 : Download the compiled binary
+- ### Method 2 : Download the compiled binary
    We publish the compiled binary in https://github.com/takanotume24/swpro/releases
 
-- #### Method 3 : Build from source code
-   Clone this repository,
-   ```
-   $ shards
-   $ mkdir bin
-   $ crystal build src/cli.cr -o bin/swpro
-   ```
-   Executing will generate an executable file (``bin/swpro``).
+</br>
 
-### [Step 2] Download and install config file
-   [Download]((https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json) the configured config file and copy it to ``~/.swpro.json``.
+
+- ### Method 3 : Build from source code
    ```
-   $ wget https://raw.githubusercontent.com/takanotume24/swpro/master/.swpro.json -O ~/.swpro.json
-   $ ./bin/swpro install
+   $ git clone https://github.com/takanotume24/swpro.git
+   $ make install-with-crystal-env
    ```
+
+
 
 <br/>
 
@@ -65,28 +55,44 @@ The way to set the proxy was different, and it was necessary to check the settin
 
 - #### Register a proxy server for commands
    ```
-   swpro set [command] [url]
+   $ swpro set [command] [url]
    ```
    An example: Register ``http://proxy.example.com:8080`` as an HTTP proxy server in ``wget``
    ```
-   swpro set wget http://proxy.example.com:8080
+   $ swpro set wget http://proxy.example.com:8080
    ```
 - #### Disable proxy for commands
    ```
-   swpro disable [command]
+   $ swpro disable [command]
    ```
    An example: Disable HTTP proxy for ``wget``
    ```
-   swpro disable wget
+   $ swpro disable wget
+   ```
+   Disable the proxy settings for all registered commands
+   ```
+   $ sudo swpro dsisable --all 
    ```
 - #### Enable proxy for commands
    ```
-   swpro enable [command]
+   $ swpro enable [command]
    ```
    An example: Enable HTTP proxy for ``wget``
    ```
-   swpro enable wget
+   $ swpro enable wget
    ```
+   Enable the proxy settings for all registered commands
+   ```
+   $ sudo swpro enable --all
+   ```
+<br/>
+
+
+## Uninstallation
+```
+$ cd path-to-cloned-folder-of-swpro
+$ make uninstall
+```
 <br/>
 
 
@@ -104,7 +110,7 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/switch-proxy/fork>)
+1. Fork it (<https://github.com/takanotume24/swpro/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

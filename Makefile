@@ -3,11 +3,14 @@ build:
 	crystal build src/cli.cr -o bin/swpro --release --static --verbose
 
 install:
-	make init
+	sudo ./bin/swpro install
+
+install-with-crystal-env:
+	make init-crystal-env
 	make build
 	sudo ./bin/swpro install
 
-init:
+init-crystal-env:
 	sudo apt update
 	sudo apt install curl wget -y
 	curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
@@ -19,7 +22,10 @@ init:
 	sudo apt install libreadline-dev -y # for using Readline
 	sudo apt install libz-dev -y       # for using crystal play
 
-
 update:
 	git pull
 	make build
+
+uninstall:
+	sudo rm /bin/swpro
+	rm ~/.swpro.json
