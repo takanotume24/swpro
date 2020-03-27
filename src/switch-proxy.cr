@@ -4,13 +4,8 @@ require "json"
 require "file_utils"
 require "./switch-proxy_helper.cr"
 require "./configs.cr"
-require "./commands/enable.cr"
-require "./commands/set.cr"
-require "./commands/disable.cr"
-require "./commands/check.cr"
-require "./commands/install.cr"
-require "./commands/internal_commands/cp_json.cr"
-require "./commands/internal_commands/symlink.cr"
+require "./commands/*"
+require "./commands/internal_commands/*"
 
 module Switch::Proxy
   VERSION = "0.2.3"
@@ -23,6 +18,15 @@ module Switch::Proxy
 
       run do |opts, args, io|
         io.puts opts.help_string
+      end
+
+      sub "execute" do 
+        desc "execute command with proxy setting."
+        usage "swpro execute [command] [args]"
+
+        run do |opts, args, io|
+          execute opts, args, io
+        end
       end
 
       sub "enable" do
