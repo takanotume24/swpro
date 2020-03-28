@@ -64,26 +64,25 @@ end
 
 def set_value(path : Path, content : String, option_set : OptionSet, quotation : String, url : String, file_end : String, io : IO = STDOUT) : String
   option = Regex::Options::MULTILINE
-  regex = Regex.new(option_set.enable_set.regex, option)
+  regex = Regex.new("#{option_set.enable_set.regex}.*\n", option)
   match_data = content.scan(regex)
+  new_line = "#{option_set.enable_set.string}#{quotation}#{url}#{quotation}#{file_end}\n"
 
   if match_data.size == 0
-    new_line = "#{option_set.enable_set.string}#{quotation}#{url}#{quotation}#{file_end}\n"
     content += new_line
     io.puts "[INFO]\t Added: #{new_line}"
     return content
   end
 
   if match_data.size > 0
-    printf "[INFO] t#{match_data} already exists. Do you want to rewrite? (y/n)?"
+    printf "[INFO]\t in #{path}, #{match_data} already exists. Do you want to rewrite? (y/n)?: "
 
     if read_line != "y"
       io.puts "[INFO]\t Did not rewrite."
       return content
     end
-    newline = "#{option_set.enable_set.string} #{quotation}#{url}#{quotation} #{file_end}\n"
 
-    content = content.gsub(regex, newline)
+    content = content.gsub(regex, new_line)
     io.puts "[INFO]\t Rewritten."
   end
 

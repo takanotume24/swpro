@@ -9,21 +9,21 @@
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::http::Proxy ",
+                    "regex": "^ *Acquire::http::Proxy *",
                     "string": "Acquire::http::Proxy "
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::http::Proxy ",
+                    "regex": "^ *# *Acquire::http::Proxy *",
                     "string": "# Acquire::http::Proxy "
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::https::Proxy ",
+                    "regex": "^ *Acquire::https::Proxy *",
                     "string": "Acquire::https::Proxy "
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::https::Proxy ",
+                    "regex": "^ *# *Acquire::https::Proxy *",
                     "string": "# Acquire::https::Proxy "
                 }
             }
@@ -67,7 +67,7 @@
         },
         "row_end": "",
         "quotation": "\"",
-        "after_execute": "echo require reload shell or \"source ~/.bashrc\"",
+        "after_execute": "echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\"",
         "keys": {
             "http_proxy": {
                 "enable_set": {
@@ -98,7 +98,7 @@
         },
         "row_end": "",
         "quotation": "\"",
-        "after_execute": "echo require reload shell or \"source ~/.bashrc\"",
+        "after_execute": "echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\"",
         "keys": {
             "http_proxy": {
                 "enable_set": {
@@ -124,63 +124,11 @@
     },
     {
         "cmd_name": "curl",
-        "conf_path": {
-            "user": "~/.curlrc"
-        },
-        "row_end": "",
-        "quotation": "\"",
-        "keys": {
-            "http_proxy": {
-                "enable_set": {
-                    "regex": "^ *proxy=",
-                    "string": "proxy="
-                },
-                "disable_set": {
-                    "regex": "^ *# *proxy=",
-                    "string": "# proxy="
-                }
-            },
-            "https_proxy": {
-                "enable_set": {
-                    "regex": "^ *proxy=",
-                    "string": "proxy="
-                },
-                "disable_set": {
-                    "regex": "^ *# *proxy=",
-                    "string": "# proxy="
-                }
-            }
-        }
+        "require_setting": "bash_lowercase"
     },
     {
         "cmd_name": "git",
-        "conf_path": {
-            "user": "~/.gitconfig"
-        },
-        "row_end": "",
-        "quotation": "\"",
-        "keys": {
-            "http_proxy": {
-                "enable_set": {
-                    "regex": "^ *\\[http\\][\\s\\S]*?proxy *=",
-                    "string": "[http]\n\tproxy="
-                },
-                "disable_set": {
-                    "regex": "^ *# *\\[http\\][\\s\\S]*?proxy *=",
-                    "string": "#[http]\n\t # proxy="
-                }
-            },
-            "https_proxy": {
-                "enable_set": {
-                    "regex": "^ *\\[https\\][\\s\\S]*?proxy *=",
-                    "string": "[https]\n\tproxy="
-                },
-                "disable_set": {
-                    "regex": "^ *# *\\[https\\][\\s\\S]*?proxy *=",
-                    "string": "#[https]\n\t# proxy="
-                }
-            }
-        }
+        "require_setting": "bash_lowercase"
     },
     {
         "cmd_name": "apt-add-repository",

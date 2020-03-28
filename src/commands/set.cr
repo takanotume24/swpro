@@ -47,9 +47,9 @@ def set(opts, args, io)
 
   after_execute = config.after_execute
   if after_execute
-    io.puts "[EXECUTE]\t #{after_execute}"
+    io.puts "[EXEC]\t #{after_execute}"
     system after_execute
   end
 
-  io.puts "[INFO]\t Proxy settings are complete."
+  io.puts "[INFO]\t #{config.cmd_name}'s proxy settings are now complete"
 end

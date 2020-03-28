@@ -52,7 +52,7 @@ def disable(opts, args, io)
 
   after_execute = config.after_execute
   if after_execute
-    io.puts "[EXECUTE]\t #{after_execute}"
+    io.puts "[EXEC]\t #{after_execute}"
     system after_execute
   end
 
