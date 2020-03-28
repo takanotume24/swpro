@@ -44,14 +44,22 @@ def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : St
 
   content = File.read path
   keys = config.keys
+  quotation = config.quotation
+  row_end = config.row_end
 
-  if keys
-    content = set_value(path, content, keys.http_proxy, config.quotation, url, config.row_end, io)
-    content = set_value(path, content, keys.https_proxy, config.quotation, url, config.row_end, io)
-    return content
+  case
+  when quotation.nil?
+    io.puts "[Error] \"quotation\" of \"#{config.cmd_name}\" is null."
+  when row_end.nil?
+    io.puts "[Error] \"row_end\" of \"#{config.cmd_name}\" is null."
+  when keys.nil?
+    io.puts "[Error] \"keys\" of \"#{config.cmd_name}\" is null."
   else
-    io.puts "[Error] \"#{config.cmd_name}\" doesn't have a \"keys\" element."
+    content = set_value(path, content, keys.http_proxy, quotation, url, row_end, io)
+    content = set_value(path, content, keys.https_proxy, quotation, url, row_end, io)
+    return content
   end
+  return nil
 end
 
 def set_value(path : Path, content : String, option_set : OptionSet, quotation : String, url : String, file_end : String, io : IO = STDOUT) : String
@@ -97,21 +105,31 @@ def search_command(configs : Array(Config), command : String, io : IO = STDOUT) 
   return i
 end
 
-def select_path(config, opts) : Path
-  case opts
-  when .system
-    return Path[config.conf_path.system].normalize.expand(home: true)
-  when .user
-    return Path[config.conf_path.system].normalize.expand(home: true)
-  end
+def select_path(config : Config, opts) : Path?
+  conf_path = config.conf_path
+  if conf_path
+    system = conf_path.system
+    user = conf_path.user
 
-  case
-  when config.conf_path.system.empty?
-    return Path[config.conf_path.user].normalize.expand(home: true)
-  when config.conf_path.user.empty?
-    return Path[config.conf_path.system].normalize.expand(home: true)
-  else
-    return Path[config.conf_path.user].normalize.expand(home: true)
+    case opts
+    when .system
+      if system
+        return Path[system].normalize.expand(home: true)
+      end
+    when .user
+      if user
+        return Path[user].normalize.expand(home: true)
+      end
+    end
+
+    case
+    when user
+      return Path[user].normalize.expand(home: true)
+    when system
+      return Path[system].normalize.expand(home: true)
+    else
+      abort "[Error] There is no system configuration path or user configuration path set for \"#{config.cmd_name}\" "
+    end
   end
 end
 
@@ -119,11 +137,15 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
   i = 0
   result = false
   configs.each do |config|
+    conf_path = config.conf_path
     case
+    when conf_path
+      case
+      when conf_path.user.nil? && conf_path.system.nil?
+        io.puts "[ERROR] No.#{i} conf_path.user and conf_path.system are empty"
+      end
     when config.cmd_name.to_s.empty?
-      io.puts "[error] No.#{i} cmd_name is empty."
-    when config.conf_path.system.empty? && config.conf_path.user.empty?
-      io.puts "[error] No.#{i} conf_path.system and conf_path.user are empty"
+      io.puts "[ERROR] No.#{i} cmd_name is empty."
     else
       io.puts "No.#{i},\tThere was no problem with [#{config.cmd_name}]."
       result = true
@@ -160,10 +182,10 @@ def read_json(path : Path, io : IO) : Array(Config)?
   end
 end
 
-def write_conf_file(path : Path, content : String?, cmd_name : String, io)
+def write_conf_file(path : Path, content : String?, io)
   if content
-    backup_dir_path = "#{path.parent}/.#{cmd_name}.backup.d"
-    backup_file_path = Path.new("#{backup_dir_path}/#{cmd_name}.#{Time.local.to_s("%Y-%m-%d.%H-%M-%S")}.bak")
+    backup_dir_path = "#{path.parent}/.#{path.basename}.backup.d"
+    backup_file_path = Path.new("#{backup_dir_path}/#{path.basename}.#{Time.local.to_s("%Y-%m-%d.%H-%M-%S")}.bak")
 
     if !Dir.exists? backup_dir_path
       Dir.mkdir backup_dir_path
@@ -173,5 +195,11 @@ def write_conf_file(path : Path, content : String?, cmd_name : String, io)
     File.write(path, content)
   else
     abort "[Error] Prevented an empty string from being written to the #{path}"
+  end
+end
+
+macro safe(var, content)
+  if {{var}}.nil?.!
+    {{content}}
   end
 end

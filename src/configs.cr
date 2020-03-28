@@ -25,17 +25,17 @@ end
 
 class ConfigPathSet
   JSON.mapping(
-    system: {type: String, nilable: false},
-    user: {type: String, nilable: false},
+    system: {type: String, nilable: true},
+    user: {type: String, nilable: true},
   )
 end
 
 class Config
   JSON.mapping(
     cmd_name: String,
-    conf_path: {type: ConfigPathSet},
-    row_end: String,
-    quotation: String,
+    conf_path: {type: ConfigPathSet, nilable: true},
+    row_end: {type: String, nilable: true},
+    quotation: {type: String, nilable: true},
     keys: {type: Keyword, nilable: true},
   )
 end

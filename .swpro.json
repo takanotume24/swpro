@@ -187,12 +187,9 @@
     },
     {
         "cmd_name": "apt-add-repository",
-        "conf_path": {
-            "system": "",
-            "user": "~/.gitconfig"
-        },
-        "row_end": "",
-        "quotation": "\"",
+        "conf_path": null,
+        "row_end": null,
+        "quotation": null,
         "keys": null
     }
 ]

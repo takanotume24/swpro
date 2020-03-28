@@ -1,7 +1,6 @@
 def set(opts, args, io)
   if opts.all
     check_arg_num opts, args, num = 1
-    _command = nil
     _url = args[0]
   else
     check_arg_num opts, args, num = 2
@@ -10,7 +9,10 @@ def set(opts, args, io)
   end
 
   configs = read_json SWPRO_CONF_PATH, io
-  configs = configs.nil? ? return -1 : configs
+
+  if configs.nil?
+    abort
+  end
 
   if opts.all
     configs.each do |config|
@@ -19,19 +21,25 @@ def set(opts, args, io)
     return 1
   end
 
-  _command = _command.nil? ? return -1 : _command
-  index = search_command configs, _command
+  safe _command, index = search_command configs, _command
+  safe index, config = configs[index]
 
-  config = index.nil? ? return -1 : configs[index]
+  if config.nil?
+    abort
+  end
 
   path = select_path config, opts
+
+  if path.nil?
+    abort
+  end
 
   check_file_exists path
 
   check_writable path
   content = set_proxy path, config, _url, io
 
-  write_conf_file path, content, config.cmd_name, io
+  write_conf_file path, content, io
 
   io.puts "Proxy settings are complete."
 end
