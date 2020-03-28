@@ -2,21 +2,21 @@ require "./configs.cr"
 
 def check_writable(path : Path, io : IO = STDOUT)
   if (!File.writable? path)
-    io.puts "[error] Cannot write to #{path}. Check permissions."
+    io.puts "[ERROR]\t Cannot write to #{path}. Check permissions."
     abort
   end
 end
 
 def check_readable(path : Path, io : IO = STDOUT)
   if (!File.readable? path)
-    io.puts "[error] Unable to read #{path}. Check permissions."
+    io.puts "[ERROR]\t Unable to read #{path}. Check permissions."
     abort
   end
 end
 
 def check_arg_num(opts, args, num, io : IO = STDOUT)
   if (args.size < num)
-    io.puts "[error] Check the arguments."
+    io.puts "[ERROR]\t Check the arguments."
     io.puts opts.help_string
     abort
   end
@@ -24,7 +24,7 @@ end
 
 def check_file_exists_only_check(path : Path, io : IO = STDOUT) : Bool
   if (!File.file? path)
-    io.puts "[error] #{path} does not exist."
+    io.puts "[ERROR]\t #{path} does not exist."
     return false
   end
   return true
@@ -34,7 +34,7 @@ def check_file_exists(path : Path, io : IO = STDOUT)
   if (!File.file? path)
     file = File.new(path, "w")
     file.close
-    io.puts "#{path} did not exist, so it was created."
+    io.puts "[INFO]\t #{path} did not exist, so it was created."
   end
 end
 
@@ -49,11 +49,11 @@ def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : St
 
   case
   when quotation.nil?
-    io.puts "[Error] \"quotation\" of \"#{config.cmd_name}\" is null."
+    io.puts "[ERROR]\t \"quotation\" of \"#{config.cmd_name}\" is null."
   when row_end.nil?
-    io.puts "[Error] \"row_end\" of \"#{config.cmd_name}\" is null."
+    io.puts "[ERROR]\t \"row_end\" of \"#{config.cmd_name}\" is null."
   when keys.nil?
-    io.puts "[Error] \"keys\" of \"#{config.cmd_name}\" is null."
+    io.puts "[ERROR]\t \"keys\" of \"#{config.cmd_name}\" is null."
   else
     content = set_value(path, content, keys.http_proxy, quotation, url, row_end, io)
     content = set_value(path, content, keys.https_proxy, quotation, url, row_end, io)
@@ -68,23 +68,23 @@ def set_value(path : Path, content : String, option_set : OptionSet, quotation :
   match_data = content.scan(regex)
 
   if match_data.size == 0
-    new_line = "#{option_set.enable_set.string} #{quotation}#{url}#{quotation} #{file_end}\n"
+    new_line = "#{option_set.enable_set.string}#{quotation}#{url}#{quotation}#{file_end}\n"
     content += new_line
-    io.puts "Added: #{new_line}"
+    io.puts "[INFO]\t Added: #{new_line}"
     return content
   end
 
   if match_data.size > 0
-    printf "#{match_data} already exists. Do you want to rewrite? (y/n)?"
+    printf "[INFO] t#{match_data} already exists. Do you want to rewrite? (y/n)?"
 
     if read_line != "y"
-      io.puts "Did not rewrite."
+      io.puts "[INFO]\t Did not rewrite."
       return content
     end
     newline = "#{option_set.enable_set.string} #{quotation}#{url}#{quotation} #{file_end}\n"
 
     content = content.gsub(regex, newline)
-    io.puts "Rewritten."
+    io.puts "[INFO]\t Rewritten."
   end
 
   return content
@@ -99,7 +99,7 @@ def search_command(configs : Array(Config), command : String, io : IO = STDOUT) 
     i += 1
   end
   if i == configs.size
-    io.puts "#{command} is not supported."
+    io.puts "[ERROR]\t #{command} is not supported."
     return nil
   end
   return i
@@ -128,7 +128,7 @@ def select_path(config : Config, opts) : Path?
     when system
       return Path[system].normalize.expand(home: true)
     else
-      abort "[Error] There is no system configuration path or user configuration path set for \"#{config.cmd_name}\" "
+      abort "[ERROR]\t There is no system configuration path or user configuration path set for \"#{config.cmd_name}\" "
     end
   end
 end
@@ -138,18 +138,17 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
   result = false
   configs.each do |config|
     conf_path = config.conf_path
+
     case
-    when conf_path
-      case
-      when conf_path.user.nil? && conf_path.system.nil?
-        io.puts "[ERROR] No.#{i} conf_path.user and conf_path.system are empty"
-      end
+    when conf_path && conf_path.user.nil? && conf_path.system.nil?
+      io.puts "[ERROR]\t No.#{i} conf_path.user and conf_path.system are empty"
     when config.cmd_name.to_s.empty?
-      io.puts "[ERROR] No.#{i} cmd_name is empty."
+      io.puts "[ERROR]\t No.#{i} cmd_name is empty."
     else
-      io.puts "No.#{i},\tThere was no problem with [#{config.cmd_name}]."
+      io.puts "[INFO]\t No.#{i},\tThere was no problem with [#{config.cmd_name}]."
       result = true
     end
+
     i += 1
   end
   return result
@@ -157,26 +156,26 @@ end
 
 def cp(src : Path, dest : Path, io : IO)
   if File.file? dest
-    io.printf "#{dest} already exists. Overwrite with #{src} ?(y/n)"
+    io.printf "[INFO]\t #{dest} already exists. Overwrite with #{src} ?(y/n)"
     ans = read_line
 
     case ans
     when "y"
     else
-      io.puts "Canceled."
+      io.puts "[INFO]\t Canceled."
       return
     end
   end
 
   FileUtils.cp src_path: src.to_s, dest: dest.to_s
-  io.puts "#{src} copied to #{dest}"
+  io.puts "[INFO]\t #{src} copied to #{dest}"
 end
 
 def read_json(path : Path, io : IO) : Array(Config)?
   begin
     return Array(Config).from_json(File.read path)
   rescue ex
-    io.puts "[error] Failed to read #{path}. Check the format of the json file."
+    io.puts "[ERROR]\t Failed to read #{path}. Check the format of the json file."
     io.puts ex.message
     return nil
   end
@@ -194,7 +193,7 @@ def write_conf_file(path : Path, content : String?, io)
     cp path, backup_file_path, io
     File.write(path, content)
   else
-    abort "[Error] Prevented an empty string from being written to the #{path}"
+    abort "[ERROR]\t Prevented an empty string from being written to the #{path}"
   end
 end
 

@@ -37,5 +37,7 @@ class Config
     row_end: {type: String, nilable: true},
     quotation: {type: String, nilable: true},
     keys: {type: Keyword, nilable: true},
+    require_setting: {type: String, nilable: true},
+    after_execute: {type: String, nilable: true}
   )
 end

@@ -2,30 +2,29 @@
     {
         "cmd_name": "apt",
         "conf_path": {
-            "system": "/etc/apt/apt.conf",
-            "user": ""
+            "system": "/etc/apt/apt.conf"
         },
         "row_end": ";",
         "quotation": "\"",
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::http::Proxy",
-                    "string": "Acquire::http::Proxy"
+                    "regex": "^ *Acquire::http::Proxy ",
+                    "string": "Acquire::http::Proxy "
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::http::Proxy",
-                    "string": "# Acquire::http::Proxy"
+                    "regex": "^ *# *Acquire::http::Proxy ",
+                    "string": "# Acquire::http::Proxy "
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::https::Proxy",
-                    "string": "Acquire::https::Proxy"
+                    "regex": "^ *Acquire::https::Proxy ",
+                    "string": "Acquire::https::Proxy "
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::https::Proxy",
-                    "string": "# Acquire::https::Proxy"
+                    "regex": "^ *# *Acquire::https::Proxy ",
+                    "string": "# Acquire::https::Proxy "
                 }
             }
         }
@@ -64,11 +63,11 @@
     {
         "cmd_name": "bash_lowercase",
         "conf_path": {
-            "system": "",
             "user": "~/.bashrc"
         },
         "row_end": "",
         "quotation": "\"",
+        "after_execute": "echo require reload shell or \"source ~/.bashrc\"",
         "keys": {
             "http_proxy": {
                 "enable_set": {
@@ -95,11 +94,11 @@
     {
         "cmd_name": "bash_uppercase",
         "conf_path": {
-            "system": "",
             "user": "~/.bashrc"
         },
         "row_end": "",
         "quotation": "\"",
+        "after_execute": "echo require reload shell or \"source ~/.bashrc\"",
         "keys": {
             "http_proxy": {
                 "enable_set": {
@@ -126,7 +125,6 @@
     {
         "cmd_name": "curl",
         "conf_path": {
-            "system": "",
             "user": "~/.curlrc"
         },
         "row_end": "",
@@ -157,7 +155,6 @@
     {
         "cmd_name": "git",
         "conf_path": {
-            "system": "",
             "user": "~/.gitconfig"
         },
         "row_end": "",
@@ -187,9 +184,10 @@
     },
     {
         "cmd_name": "apt-add-repository",
-        "conf_path": null,
-        "row_end": null,
-        "quotation": null,
-        "keys": null
+        "require_setting": "bash_lowercase"
+    },
+    {
+        "cmd_name": "snap",
+        "require_setting": "bash_lowercase"
     }
 ]

@@ -28,6 +28,10 @@ def set(opts, args, io)
     abort
   end
 
+  if config.require_setting
+    Switch::Proxy::MyCli.start(["set", config.require_setting.to_s, _url], io: io)
+  end
+
   path = select_path config, opts
 
   if path.nil?
@@ -41,5 +45,11 @@ def set(opts, args, io)
 
   write_conf_file path, content, io
 
-  io.puts "Proxy settings are complete."
+  after_execute = config.after_execute
+  if after_execute
+    io.puts "[EXECUTE]\t #{after_execute}"
+    system after_execute
+  end
+
+  io.puts "[INFO]\t Proxy settings are complete."
 end

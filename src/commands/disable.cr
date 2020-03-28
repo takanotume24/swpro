@@ -24,6 +24,10 @@ def disable(opts, args, io)
     abort
   end
 
+  if config.require_setting
+    Switch::Proxy::MyCli.start(["disable", config.require_setting.to_s], io: io)
+  end
+
   path = select_path config, opts
 
   if path.nil?
@@ -45,5 +49,12 @@ def disable(opts, args, io)
   content = content.gsub Regex.new(keys.http_proxy.enable_set.regex, option), keys.http_proxy.disable_set.string
   content = content.gsub Regex.new(keys.https_proxy.enable_set.regex, option), keys.https_proxy.disable_set.string
   write_conf_file(path, content, io)
-  io.puts "Disabled proxy settings for #{_command}."
+
+  after_execute = config.after_execute
+  if after_execute
+    io.puts "[EXECUTE]\t #{after_execute}"
+    system after_execute
+  end
+
+  io.puts "[INFO]\t Disabled proxy settings for #{_command}."
 end
