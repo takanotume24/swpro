@@ -33,9 +33,9 @@ end
 class Config
   JSON.mapping(
     cmd_name: String,
-    conf_path: ConfigPathSet,
+    conf_path: {type: ConfigPathSet},
     row_end: String,
     quotation: String,
-    keys: {type: Keyword, nilable: false},
+    keys: {type: Keyword, nilable: true},
   )
 end

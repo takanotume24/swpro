@@ -38,17 +38,20 @@ def check_file_exists(path : Path, io : IO = STDOUT)
   end
 end
 
-def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : String
+def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : String?
   check_writable path
   check_file_exists path
 
   content = File.read path
-  regex_set_http = config.keys.http_proxy
-  regex_set_https = config.keys.https_proxy
+  keys = config.keys
 
-  content = set_value(path, content, regex_set_http, config.quotation, url, config.row_end, io)
-  content = set_value(path, content, regex_set_https, config.quotation, url, config.row_end, io)
-  return content
+  if keys
+    content = set_value(path, content, keys.http_proxy, config.quotation, url, config.row_end, io)
+    content = set_value(path, content, keys.https_proxy, config.quotation, url, config.row_end, io)
+    return content
+  else
+    io.puts "[Error] \"#{config.cmd_name}\" doesn't have a \"keys\" element."
+  end
 end
 
 def set_value(path : Path, content : String, option_set : OptionSet, quotation : String, url : String, file_end : String, io : IO = STDOUT) : String
@@ -127,7 +130,6 @@ def is_vaild_json?(configs : Array(Config), io : IO) : Bool
     end
     i += 1
   end
-
   return result
 end
 
@@ -145,7 +147,7 @@ def cp(src : Path, dest : Path, io : IO)
   end
 
   FileUtils.cp src_path: src.to_s, dest: dest.to_s
-  io.puts "#{src} copied to #{dest}."
+  io.puts "#{src} copied to #{dest}"
 end
 
 def read_json(path : Path, io : IO) : Array(Config)?
@@ -155,5 +157,21 @@ def read_json(path : Path, io : IO) : Array(Config)?
     io.puts "[error] Failed to read #{path}. Check the format of the json file."
     io.puts ex.message
     return nil
+  end
+end
+
+def write_conf_file(path : Path, content : String?, cmd_name : String, io)
+  if content
+    backup_dir_path = "#{path.parent}/.#{cmd_name}.backup.d"
+    backup_file_path = Path.new("#{backup_dir_path}/#{cmd_name}.#{Time.local.to_s("%Y-%m-%d.%H-%M-%S")}.bak")
+
+    if !Dir.exists? backup_dir_path
+      Dir.mkdir backup_dir_path
+    end
+
+    cp path, backup_file_path, io
+    File.write(path, content)
+  else
+    abort "[Error] Prevented an empty string from being written to the #{path}"
   end
 end

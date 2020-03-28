@@ -24,9 +24,13 @@ def disable(opts, args, io)
 
   content = File.read path
   option = Regex::Options::MULTILINE
-  content = content.gsub Regex.new(config.keys.http_proxy.enable_set.regex, option), config.keys.http_proxy.disable_set.string
-  content = content.gsub Regex.new(config.keys.https_proxy.enable_set.regex, option), config.keys.https_proxy.disable_set.string
 
-  File.write(path, content)
-  io.puts "Disabled proxy settings for #{_command}."
+  keys = config.keys
+
+  if keys
+    content = content.gsub Regex.new(keys.http_proxy.enable_set.regex, option), keys.http_proxy.disable_set.string
+    content = content.gsub Regex.new(keys.https_proxy.enable_set.regex, option), keys.https_proxy.disable_set.string
+    write_conf_file(path, content, config.cmd_name, io)
+    io.puts "Disabled proxy settings for #{_command}."
+  end
 end

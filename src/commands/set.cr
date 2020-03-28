@@ -9,7 +9,6 @@ def set(opts, args, io)
     _url = args[1]
   end
 
-  content = nil
   configs = read_json SWPRO_CONF_PATH, io
   configs = configs.nil? ? return -1 : configs
 
@@ -32,7 +31,7 @@ def set(opts, args, io)
   check_writable path
   content = set_proxy path, config, _url, io
 
-  File.write(path, content)
+  write_conf_file path, content, config.cmd_name, io
 
   io.puts "Proxy settings are complete."
 end

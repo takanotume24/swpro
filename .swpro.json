@@ -184,5 +184,15 @@
                 }
             }
         }
+    },
+    {
+        "cmd_name": "apt-add-repository",
+        "conf_path": {
+            "system": "",
+            "user": "~/.gitconfig"
+        },
+        "row_end": "",
+        "quotation": "\"",
+        "keys": null
     }
 ]
