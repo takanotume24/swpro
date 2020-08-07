@@ -1,5 +1,4 @@
-[
-    {
+[{
         "cmd_name": "apt",
         "conf_path": {
             "system": "/etc/apt/apt.conf"
@@ -67,7 +66,7 @@
         },
         "row_end": "",
         "quotation": "\"",
-        "after_execute": "echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\"",
+        "after_execute": ["echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\""],
         "keys": {
             "http_proxy": {
                 "enable_set": {
@@ -98,7 +97,7 @@
         },
         "row_end": "",
         "quotation": "\"",
-        "after_execute": "echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\"",
+        "after_execute": ["echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\""],
         "keys": {
             "http_proxy": {
                 "enable_set": {

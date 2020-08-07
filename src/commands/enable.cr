@@ -56,7 +56,7 @@ def enable(opts, args, io)
   after_execute = config.after_execute
   if after_execute
     io.puts "[EXEC]\t #{after_execute}"
-    system after_execute
+    after_execute.each do |command| system command end
   end
 
   io.puts "[INFO]\t Enabled proxy settings for #{_command}."

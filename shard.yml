@@ -5,10 +5,10 @@ authors:
   - your-name-here <your-email-here>
 
 targets:
-  switch-proxy:
-    main: src/switch-proxy.cr
+  swpro:
+    main: src/cli.cr
 
-crystal: 0.32.0
+crystal: 0.35.1
 
 dependencies:
   clim:

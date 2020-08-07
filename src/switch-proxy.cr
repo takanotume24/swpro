@@ -61,7 +61,7 @@ module Switch::Proxy
 
         desc "set configs."
         usage "swpro set [command] [proxy server uri]"
-
+          
         run do |opts, args, io|
           set opts, args, io
         end
