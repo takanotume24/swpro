@@ -1,7 +1,7 @@
 module Switch::Proxy::Commands
   extend self 
   include Switch::Proxy::Config
-  
+
   def disable(opts, args, io)
     _command = args.target_command
     proxy_configs = read_proxy_configs_from_json ProxyConfig.get_path, io
@@ -48,8 +48,8 @@ module Switch::Proxy::Commands
       abort
     end
 
-    http_string = keys.http_proxy.disable_set.string.gsub "REPLACEMENT", user_config.domain
-    https_string = keys.https_proxy.disable_set.string.gsub "REPLACEMENT", user_config.domain
+    http_string = keys.http_proxy.disable_set.string.gsub user_config.replacement, user_config.domain
+    https_string = keys.https_proxy.disable_set.string.gsub user_config.replacement, user_config.domain
     puts content.scan(keys.http_proxy.enable_set.regex)
     puts content.scan(keys.https_proxy.enable_set.regex)
     puts keys.http_proxy.enable_set.regex

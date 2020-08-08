@@ -2,7 +2,9 @@ require "./../config/proxy_list.cr"
 
 module Switch::Proxy::Helper::Common
   extend self
+  include Switch::Proxy::Config
   include Switch::Proxy::Config::ProxyConfig
+  include Switch::Proxy::Helper::IOHelper
   
   def set_proxy(path : Path, config : ProxyConfig, url : String, io : IO = STDOUT) : String?
     check_writable path
@@ -25,7 +27,13 @@ module Switch::Proxy::Helper::Common
   def set_value(path : Path, content : String, option_set : OptionSet, url : String, io : IO = STDOUT) : String
     regex = option_set.enable_set.regex
     match_data = content.scan(regex)
-    new_line = option_set.enable_set.string.gsub "REPLACEMENT", url
+    user_config = read_user_config_from_json UserConfig.get_path, io
+    if user_config.nil?
+      io.puts error "#{UserConfig.get_path.colorize.underline} is Nil."
+      abort
+    end
+
+    new_line = option_set.enable_set.string.gsub user_config.replacement, url
 
     if match_data.size == 0
       content += new_line + "\n"
@@ -110,5 +118,8 @@ module Switch::Proxy::Helper::Common
       i += 1
     end
     return result
+  end
+
+  def is_vaild_json?(config : UserConfig, io : IO) : Boot
   end
 end

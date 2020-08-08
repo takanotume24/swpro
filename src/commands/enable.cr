@@ -57,8 +57,8 @@ module Switch::Proxy::Commands
       abort
     end
 
-    http_string = keys.http_proxy.enable_set.string.gsub "REPLACEMENT", user_config.domain
-    https_string = keys.https_proxy.enable_set.string.gsub "REPLACEMENT", user_config.domain
+    http_string = keys.http_proxy.enable_set.string.gsub user_config.replacement, user_config.domain
+    https_string = keys.https_proxy.enable_set.string.gsub user_config.replacement, user_config.domain
     content = content.gsub keys.http_proxy.disable_set.regex, http_string
     content = content.gsub keys.https_proxy.disable_set.regex, https_string
 

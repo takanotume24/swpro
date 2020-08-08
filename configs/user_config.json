@@ -1,1 +1,4 @@
-{"domain": "http://example.com:8080"}
+{
+    "domain": "http://example.com:8080",
+    "replacement": "REPLACEMENT"
+}

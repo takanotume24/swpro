@@ -3,7 +3,7 @@ require "uri"
 
 module Switch::Proxy::Config::UserConfig
   extend self
-  
+
   def get_path
     Path["~/.swpro/user_config.json"].normalize.expand(home: true)
   end
@@ -15,5 +15,6 @@ module Switch::Proxy::Config::UserConfig
   class UserConfig
     include JSON::Serializable
     property domain : URI
+    property replacement : String = "REPLACEMENT"
   end
 end

@@ -12,7 +12,7 @@ module Switch::Proxy::Config::ProxyConfig
     user_conf_file = File.read Switch::Proxy::Config::UserConfig.get_path
 
     user_config = Switch::Proxy::Config::UserConfig::UserConfig.from_json(user_conf_file)
-    string = pull.read_string.gsub "REPLACEMENT", user_config.domain
+    string = pull.read_string.gsub user_config.replacement, user_config.domain
     new string, Regex::Options::MULTILINE
   end
 
