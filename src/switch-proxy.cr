@@ -5,7 +5,8 @@ require "file_utils"
 require "./switch-proxy_helper.cr"
 require "./configs.cr"
 require "./commands/*"
-require "./commands/internal_commands/*"
+require "./commands/internal/*"
+
 
 module Switch::Proxy
   VERSION = "0.2.3"
@@ -21,6 +22,8 @@ module Switch::Proxy
       end
 
       sub "execute" do 
+        include Switch::Proxy::Commands
+
         desc "execute command with proxy setting."
         usage "swpro execute [command] [args]"
 
@@ -30,6 +33,8 @@ module Switch::Proxy
       end
 
       sub "enable" do
+        include Switch::Proxy::Commands
+
         option "--system", type: Bool, desc: "applay for system."
         option "--user", type: Bool, desc: "applay for user."
         option "--all", type: Bool, desc: "applay proxy setting to all commands."
@@ -42,6 +47,8 @@ module Switch::Proxy
       end
 
       sub "disable" do
+        include Switch::Proxy::Commands
+
         option "--system", type: Bool, desc: "applay for system."
         option "--user", type: Bool, desc: "applay for user."
         option "--all", type: Bool, desc: "applay proxy setting to all commands."
@@ -55,6 +62,8 @@ module Switch::Proxy
       end
 
       sub "set" do
+        include Switch::Proxy::Commands
+
         option "--system", type: Bool, desc: "applay for system."
         option "--user", type: Bool, desc: "applay for user."
         option "--all", type: Bool, desc: "applay proxy setting to all commands."
@@ -68,6 +77,8 @@ module Switch::Proxy
       end
 
       sub "check" do
+        include Switch::Proxy::Commands
+
         desc "check swpro.json"
         usage "swpro check"
 
@@ -77,6 +88,8 @@ module Switch::Proxy
       end
 
       sub "install" do
+        include Switch::Proxy::Commands
+
         desc "install swpro to system"
         usage "sudo swpro install"
 
@@ -85,15 +98,17 @@ module Switch::Proxy
         end
       end
 
-      sub "internal_commands" do
+      sub "internal" do
         desc "This is a command used for internal processing."
-        usage "swpro internal_commands [command]"
+        usage "swpro internal [command]"
 
         run do |opts, args, io|
           io.puts opts.help_string
         end
 
         sub "cp_json" do
+          include Switch::Proxy::Commands::Internal
+
           desc "copy json to ~/.swpro.json"
           usage "swpro cp_json"
 
@@ -103,6 +118,8 @@ module Switch::Proxy
         end
 
         sub "symlink" do
+          include Switch::Proxy::Commands::Internal
+
           desc "create symlink."
           usage "swpro symlink"
 
