@@ -48,8 +48,9 @@ def enable(opts, args, io)
     abort
   end
 
-  content = content.gsub Regex.new(keys.http_proxy.disable_set.regex, option), keys.http_proxy.enable_set.string
-  content = content.gsub Regex.new(keys.https_proxy.disable_set.regex, option), keys.https_proxy.enable_set.string
+  content = content.gsub keys.http_proxy.disable_set.regex, keys.http_proxy.enable_set.string
+  content = content.gsub keys.https_proxy.disable_set.regex, keys.https_proxy.enable_set.string
+  puts keys.http_proxy.disable_set.regex
 
   write_conf_file(path, content, io)
 

@@ -9,6 +9,10 @@ SWPRO_CONF_PATH = Path["~/.swpro.json"].normalize.expand(home: true)
 # )
 # end
 
+def Regex.new(pull : JSON::PullParser)
+  new pull.read_string
+end
+
 class Keyword
   include JSON::Serializable
   property http_proxy : OptionSet
@@ -17,7 +21,7 @@ end
 
 class RegexSet
   include JSON::Serializable
-  property regex : String
+  property regex : Regex
   property string : String
 end
 
@@ -29,8 +33,8 @@ end
 
 class ConfigPathSet
   include JSON::Serializable
-  property system : String?
-  property user : String?
+  property system : Path?
+  property user : Path?
 end
 
 class Config
