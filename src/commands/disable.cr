@@ -50,10 +50,6 @@ module Switch::Proxy::Commands
 
     http_string = keys.http_proxy.disable_set.string.gsub user_config.replacement, user_config.domain
     https_string = keys.https_proxy.disable_set.string.gsub user_config.replacement, user_config.domain
-    puts content.scan(keys.http_proxy.enable_set.regex)
-    puts content.scan(keys.https_proxy.enable_set.regex)
-    puts keys.http_proxy.enable_set.regex
-    puts keys.https_proxy.enable_set.regex
 
     content = content.gsub keys.http_proxy.enable_set.regex, http_string
     content = content.gsub keys.https_proxy.enable_set.regex, https_string
