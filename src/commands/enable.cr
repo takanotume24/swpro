@@ -1,28 +1,34 @@
 require "json"
 
 module Switch::Proxy::Commands
+  include Switch::Proxy::Helper::IOHelper
+
   def enable(opts, args, io)
     _command = args.target_command
 
-    configs = read_json SWPRO_CONF_PATH, io
+    proxy_configs = read_proxy_configs_from_json SWPRO_PROXY_LIST_PATH, io
+    user_config = read_user_config_from_json SWPRO_USER_CONFIG_PATH, io
 
-    if configs.nil?
+    if proxy_configs.nil?
+      abort
+    end
+    if user_config.nil?
       abort
     end
 
     if _command == "all"
-      configs.each do |config|
+      proxy_configs.each do |config|
         Switch::Proxy::MyCli.start(["enable", config.cmd_name.to_s], io: io)
       end
       return 1
     end
 
-    index = search_command configs, _command
+    index = search_command proxy_configs, _command
     if index.nil?
       abort
     end
-    
-    config = configs[index]
+
+    config = proxy_configs[index]
 
     if config.nil?
       abort
@@ -49,9 +55,10 @@ module Switch::Proxy::Commands
       abort
     end
 
-    content = content.gsub keys.http_proxy.disable_set.regex, keys.http_proxy.enable_set.string
-    content = content.gsub keys.https_proxy.disable_set.regex, keys.https_proxy.enable_set.string
-    puts keys.http_proxy.disable_set.regex
+    http_string = keys.http_proxy.enable_set.string.gsub "REPLACEMENT", user_config.domain
+    https_string = keys.https_proxy.enable_set.string.gsub "REPLACEMENT", user_config.domain
+    content = content.gsub keys.http_proxy.disable_set.regex, http_string
+    content = content.gsub keys.https_proxy.disable_set.regex, https_string
 
     write_conf_file(path, content, io)
 
@@ -63,6 +70,6 @@ module Switch::Proxy::Commands
       end
     end
 
-    io.puts "[INFO]\t Enabled proxy settings for #{_command}."
+    io.puts info "Enabled proxy settings for #{_command}."
   end
 end

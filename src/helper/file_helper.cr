@@ -1,7 +1,12 @@
 require "./io_helper.cr"
+require "../config/user_config"
+require "../config/proxy_list"
 
 module Switch::Proxy::Helper::FileHelper
   include Switch::Proxy::Helper::IOHelper
+  include  Switch::Proxy::Config::ProxyConfig
+  include Switch::Proxy::Config::UserConfig
+
   def check_writable(path : Path, io : IO = STDOUT)
     if (!File.writable? path)
       string = error "Cannot write to #{path.to_s.colorize.underline}. Check permissions."
@@ -28,6 +33,7 @@ module Switch::Proxy::Helper::FileHelper
 
   def check_file_exists(path : Path, io : IO = STDOUT)
     if (!File.file? path)
+      Dir.mkdir_p path.parent
       file = File.new(path, "w")
       file.close
       io.puts info "#{path.to_s.colorize.underline} did not exist, so it was created."
@@ -48,12 +54,22 @@ module Switch::Proxy::Helper::FileHelper
     end
 
     FileUtils.cp src_path: src.to_s, dest: dest.to_s
-    io.puts info "#{src} copied to #{dest}"
+    io.puts info "#{src.to_s.colorize.underline} copied to #{dest.to_s.colorize.underline}"
   end
 
-  def read_json(path : Path, io : IO) : Array(Config)?
+  def read_proxy_configs_from_json(path : Path, io : IO) : Array(ProxyConfig)?
     begin
-      return Array(Config).from_json(File.read path)
+      return Array(ProxyConfig).from_json(File.read path)
+    rescue ex
+      io.puts error "Failed to read #{path.to_s.colorize.underline}. Check the format of the json file."
+      io.puts ex.message
+      return nil
+    end
+  end
+
+  def read_user_config_from_json(path : Path, io : IO) : UserConfig?
+    begin
+      return UserConfig.from_json(File.read path)
     rescue ex
       io.puts error "Failed to read #{path.to_s.colorize.underline}. Check the format of the json file."
       io.puts ex.message
@@ -67,9 +83,9 @@ module Switch::Proxy::Helper::FileHelper
       backup_file_path = Path.new("#{backup_dir_path}/#{path.basename}.#{Time.local.to_s("%Y-%m-%d.%H-%M-%S")}.bak")
 
       if !Dir.exists? backup_dir_path
-        Dir.mkdir backup_dir_path
+        Dir.mkdir_p backup_dir_path
       end
-
+      
       cp path, backup_file_path, io
       File.write(path, content)
     else

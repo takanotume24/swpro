@@ -2,7 +2,7 @@
 require "clim"
 require "json"
 require "file_utils"
-require "./configs.cr"
+require "./config/**"
 require "./commands/**"
 require "./helper/**"
 

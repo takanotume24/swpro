@@ -1,28 +1,32 @@
+require "../config/user_config"
+
 module Switch::Proxy::Commands
   include Switch::Proxy::Helper
+  include Switch::Proxy::Config::UserConfig
 
   def set(opts, args, io)
     _command = args.target_command
     _url = args.url
 
-    configs = read_json SWPRO_CONF_PATH, io
+    proxy_configs = read_proxy_configs_from_json SWPRO_PROXY_LIST_PATH, io
+    user_config= read_user_config_from_json SWPRO_USER_CONFIG_PATH, io
 
-    if configs.nil?
+    if proxy_configs.nil?
       abort
     end
 
     if _command == "all"
-      configs.each do |config|
+      proxy_configs.each do |config|
         Switch::Proxy::MyCli.start(["set", config.cmd_name.to_s, _url], io: io)
       end
       return 1
     end
 
-    index = search_command configs, _command
+    index = search_command proxy_configs, _command
     if index.nil?
       abort
     end
-    config = configs[index]
+    config = proxy_configs[index]
 
     if config.require_setting
       Switch::Proxy::MyCli.start(["set", config.require_setting.to_s, _url], io: io)

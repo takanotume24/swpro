@@ -6,21 +6,21 @@
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::http::Proxy *.*\n",
+                    "regex": "^ *Acquire::http::Proxy *.*\n?",
                     "string": "Acquire::http::Proxy \"REPLACEMENT\";"
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::http::Proxy *.*\n",
+                    "regex": "^ *# *Acquire::http::Proxy *.*\n?",
                     "string": "# Acquire::http::Proxy \"REPLACEMENT\";"
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::https::Proxy *.*\n",
+                    "regex": "^ *Acquire::https::Proxy *.*\n?",
                     "string": "Acquire::https::Proxy \"REPLACEMENT\";"
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::https::Proxy *.*\n",
+                    "regex": "^ *# *Acquire::https::Proxy *.*\n?",
                     "string": "# Acquire::https::Proxy \"REPLACEMENT\";"
                 }
             }
@@ -35,21 +35,21 @@
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *http_proxy *=.*\n",
+                    "regex": "^http_proxy=REPLACEMENT",
                     "string": "http_proxy=REPLACEMENT"
                 },
                 "disable_set": {
-                    "regex": "^ *#.*http_proxy *=.*\n",
+                    "regex": "^# *http_proxy=REPLACEMENT",
                     "string": "# http_proxy=REPLACEMENT"
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *https_proxy *=.*\n",
+                    "regex": "^https_proxy=REPLACEMENT",
                     "string": "https_proxy=REPLACEMENT"
                 },
                 "disable_set": {
-                    "regex": "^ *#.*https_proxy *=.*\n",
+                    "regex": "^# *https_proxy=REPLACEMENT",
                     "string": "# https_proxy=REPLACEMENT"
                 }
             }
@@ -64,21 +64,21 @@
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *export http_proxy=.*\n",
+                    "regex": "^ *export http_proxy=.*\n?",
                     "string": "export http_proxy=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export http_proxy=.*\n",
+                    "regex": "^ *# *export http_proxy=.*\n?",
                     "string": "# export http_proxy=\"REPLACEMENT\""
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *export https_proxy=.*\n",
+                    "regex": "^ *export https_proxy=.*\n?",
                     "string": "export https_proxy=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export https_proxy=.*\n",
+                    "regex": "^ *# *export https_proxy=.*\n?",
                     "string": "# export https_proxy=\"REPLACEMENT\""
                 }
             }
@@ -93,21 +93,21 @@
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *export HTTP_PROXY=.*\n",
+                    "regex": "^ *export HTTP_PROXY=.*\n?",
                     "string": "export HTTP_PROXY=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export HTTP_PROXY=.*\n",
+                    "regex": "^ *# *export HTTP_PROXY=.*\n?",
                     "string": "# export HTTP_PROXY=\"REPLACEMENT\""
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *export HTTPS_PROXY=.*\n",
+                    "regex": "^ *export HTTPS_PROXY=.*\n?",
                     "string": "export HTTPS_PROXY=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export HTTPS_PROXY=.*\n",
+                    "regex": "^ *# *export HTTPS_PROXY=.*\n?",
                     "string": "# export HTTPS_PROXY=\"REPLACEMENT\""
                 }
             }
@@ -124,21 +124,21 @@
         "keys":{
             "http_proxy":{
                 "enable_set":{
-                    "regex": "^Environment=\"HTTP_PROXY=.*\".*\n",
+                    "regex": "^Environment=\"HTTP_PROXY=.*\".*\n?",
                     "string": "Environment=\"HTTP_PROXY=REPLACEMENT\""
                 },
                 "disable_set":{
-                    "regex": "^ *# *Environment=\"HTTP_PROXY=.*\".*\n",
+                    "regex": "^ *# *Environment=\"HTTP_PROXY=.*\".*\n?",
                     "string": "# Environment=\"HTTP_PROXY=REPLACEMENT\""
                 }
             },
             "https_proxy":{
                 "enable_set":{
-                    "regex": "^Environment=\"HTTPS_PROXY=.*\".*\n",
+                    "regex": "^Environment=\"HTTPS_PROXY=.*\".*\n?",
                     "string": "Environment=\"HTTPS_PROXY=REPLACEMENT\""
                 },
                 "disable_set":{
-                    "regex": "^ *# *Environment=\"HTTPS_PROXY=.*\".*\n",
+                    "regex": "^ *# *Environment=\"HTTPS_PROXY=.*\".*\n?",
                     "string": "# Environment=\"HTTPS_PROXY=REPLACEMENT\""
                 }
             }

@@ -1,7 +1,9 @@
-require "./../configs.cr"
+require "./../config/proxy_list.cr"
 
 module Switch::Proxy::Helper::Common
-  def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : String?
+  include Switch::Proxy::Config::ProxyConfig
+  
+  def set_proxy(path : Path, config : ProxyConfig, url : String, io : IO = STDOUT) : String?
     check_writable path
     check_file_exists path
 
@@ -25,7 +27,7 @@ module Switch::Proxy::Helper::Common
     new_line = option_set.enable_set.string.gsub "REPLACEMENT", url
 
     if match_data.size == 0
-      content += new_line
+      content += new_line + "\n"
       io.puts "[INFO]\t Added: #{new_line}"
       return content
     end
@@ -45,7 +47,7 @@ module Switch::Proxy::Helper::Common
     return content
   end
 
-  def search_command(configs : Array(Config), command : String, io : IO = STDOUT) : Int32?
+  def search_command(configs : Array(ProxyConfig), command : String, io : IO = STDOUT) : Int32?
     i = 0
     configs.each do |config|
       if (config.cmd_name == command)
@@ -60,7 +62,7 @@ module Switch::Proxy::Helper::Common
     return i
   end
 
-  def select_path(config : Config, opts) : Path?
+  def select_path(config : ProxyConfig, opts) : Path?
     conf_path = config.conf_path
     if conf_path
       system = conf_path.system
@@ -88,7 +90,7 @@ module Switch::Proxy::Helper::Common
     end
   end
 
-  def is_vaild_json?(configs : Array(Config), io : IO) : Bool
+  def is_vaild_json?(configs : Array(ProxyConfig), io : IO) : Bool
     i = 0
     result = false
     configs.each do |config|
