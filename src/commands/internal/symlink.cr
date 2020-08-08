@@ -1,4 +1,6 @@
 module Switch::Proxy::Commands::Internal
+  include Switch::Proxy::Helper
+  
   def symlink(opts, args, io)
     check_arg_num opts, args, num = 0
     new_path = Path["/bin/swpro"].normalize.expand(home: true).to_s

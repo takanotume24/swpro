@@ -41,8 +41,6 @@ class Config
   include JSON::Serializable
   property cmd_name : String
   property conf_path : ConfigPathSet?
-  property row_end : String?
-  property quotation : String?
   property keys : Keyword?
   property require_setting : String?
   property after_execute : Array(String)?

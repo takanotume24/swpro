@@ -3,27 +3,25 @@
         "conf_path": {
             "system": "/etc/apt/apt.conf"
         },
-        "row_end": ";",
-        "quotation": "\"",
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::http::Proxy *",
-                    "string": "Acquire::http::Proxy "
+                    "regex": "^ *Acquire::http::Proxy *.*\n",
+                    "string": "Acquire::http::Proxy \"REPLACEMENT\";"
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::http::Proxy *",
-                    "string": "# Acquire::http::Proxy "
+                    "regex": "^ *# *Acquire::http::Proxy *.*\n",
+                    "string": "# Acquire::http::Proxy \"REPLACEMENT\";"
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *Acquire::https::Proxy *",
-                    "string": "Acquire::https::Proxy "
+                    "regex": "^ *Acquire::https::Proxy *.*\n",
+                    "string": "Acquire::https::Proxy \"REPLACEMENT\";"
                 },
                 "disable_set": {
-                    "regex": "^ *# *Acquire::https::Proxy *",
-                    "string": "# Acquire::https::Proxy "
+                    "regex": "^ *# *Acquire::https::Proxy *.*\n",
+                    "string": "# Acquire::https::Proxy \"REPLACEMENT\";"
                 }
             }
         }
@@ -34,27 +32,25 @@
             "system": "/etc/wgetrc",
             "user": "~/.wgetrc"
         },
-        "row_end": "",
-        "quotation": "",
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *http_proxy *=",
-                    "string": "http_proxy="
+                    "regex": "^ *http_proxy *=.*\n",
+                    "string": "http_proxy=REPLACEMENT"
                 },
                 "disable_set": {
-                    "regex": "^ *#.*http_proxy *=",
-                    "string": "# http_proxy="
+                    "regex": "^ *#.*http_proxy *=.*\n",
+                    "string": "# http_proxy=REPLACEMENT"
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *https_proxy *=",
-                    "string": "https_proxy="
+                    "regex": "^ *https_proxy *=.*\n",
+                    "string": "https_proxy=REPLACEMENT"
                 },
                 "disable_set": {
-                    "regex": "^ *#.*https_proxy *=",
-                    "string": "# https_proxy="
+                    "regex": "^ *#.*https_proxy *=.*\n",
+                    "string": "# https_proxy=REPLACEMENT"
                 }
             }
         }
@@ -64,28 +60,26 @@
         "conf_path": {
             "user": "~/.bashrc"
         },
-        "row_end": "",
-        "quotation": "\"",
         "after_execute": ["echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\""],
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *export http_proxy=",
-                    "string": "export http_proxy="
+                    "regex": "^ *export http_proxy=.*\n",
+                    "string": "export http_proxy=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export http_proxy=",
-                    "string": "# export http_proxy="
+                    "regex": "^ *# *export http_proxy=.*\n",
+                    "string": "# export http_proxy=\"REPLACEMENT\""
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *export https_proxy=",
-                    "string": "export https_proxy="
+                    "regex": "^ *export https_proxy=.*\n",
+                    "string": "export https_proxy=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export https_proxy=",
-                    "string": "# export https_proxy="
+                    "regex": "^ *# *export https_proxy=.*\n",
+                    "string": "# export https_proxy=\"REPLACEMENT\""
                 }
             }
         }
@@ -95,28 +89,57 @@
         "conf_path": {
             "user": "~/.bashrc"
         },
-        "row_end": "",
-        "quotation": "\"",
         "after_execute": ["echo \"\\e[32m[INFO]\t Execute \"\\\"source ~/.bashrc\"\\\" to reflect the changes.\\e[m\""],
         "keys": {
             "http_proxy": {
                 "enable_set": {
-                    "regex": "^ *export HTTP_PROXY=",
-                    "string": "export HTTP_PROXY="
+                    "regex": "^ *export HTTP_PROXY=.*\n",
+                    "string": "export HTTP_PROXY=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export HTTP_PROXY=",
-                    "string": "# export HTTP_PROXY="
+                    "regex": "^ *# *export HTTP_PROXY=.*\n",
+                    "string": "# export HTTP_PROXY=\"REPLACEMENT\""
                 }
             },
             "https_proxy": {
                 "enable_set": {
-                    "regex": "^ *export HTTPS_PROXY=",
-                    "string": "export HTTPS_PROXY="
+                    "regex": "^ *export HTTPS_PROXY=.*\n",
+                    "string": "export HTTPS_PROXY=\"REPLACEMENT\""
                 },
                 "disable_set": {
-                    "regex": "^ *# *export HTTPS_PROXY=",
-                    "string": "# export HTTPS_PROXY="
+                    "regex": "^ *# *export HTTPS_PROXY=.*\n",
+                    "string": "# export HTTPS_PROXY=\"REPLACEMENT\""
+                }
+            }
+        }
+    },{
+        "cmd_name":"docker",
+        "conf_path":{
+            "system":"/etc/systemd/system/docker.service.d/http-proxy.conf"
+        },
+        "after_execute":[
+            "sudo systemctl daemon-reload",
+            "sudo systemctl restart docker"
+        ],
+        "keys":{
+            "http_proxy":{
+                "enable_set":{
+                    "regex": "^Environment=\"HTTP_PROXY=.*\".*\n",
+                    "string": "Environment=\"HTTP_PROXY=REPLACEMENT\""
+                },
+                "disable_set":{
+                    "regex": "^ *# *Environment=\"HTTP_PROXY=.*\".*\n",
+                    "string": "# Environment=\"HTTP_PROXY=REPLACEMENT\""
+                }
+            },
+            "https_proxy":{
+                "enable_set":{
+                    "regex": "^Environment=\"HTTPS_PROXY=.*\".*\n",
+                    "string": "Environment=\"HTTPS_PROXY=REPLACEMENT\""
+                },
+                "disable_set":{
+                    "regex": "^ *# *Environment=\"HTTPS_PROXY=.*\".*\n",
+                    "string": "# Environment=\"HTTPS_PROXY=REPLACEMENT\""
                 }
             }
         }
