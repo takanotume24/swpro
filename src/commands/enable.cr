@@ -2,12 +2,7 @@ require "json"
 
 module Switch::Proxy::Commands
   def enable(opts, args, io)
-    if opts.all
-      check_arg_num opts, args, num = 0
-    else
-      check_arg_num opts, args, num = 1
-      _command = args[0]
-    end
+    _command = args.target_command
 
     configs = read_json SWPRO_CONF_PATH, io
 
@@ -15,15 +10,20 @@ module Switch::Proxy::Commands
       abort
     end
 
-    if opts.all
+    if _command == "all"
       configs.each do |config|
         Switch::Proxy::MyCli.start(["enable", config.cmd_name.to_s], io: io)
       end
       return 1
     end
 
-    safe _command, index = search_command configs, _command
-    safe index, config = configs[index]
+    index = search_command configs, _command
+    if index.nil?
+      abort
+    end
+    
+    config = configs[index]
+
     if config.nil?
       abort
     end

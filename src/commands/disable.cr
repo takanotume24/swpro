@@ -1,29 +1,24 @@
 module Switch::Proxy::Commands
   def disable(opts, args, io)
-    if opts.all
-      check_arg_num opts, args, num = 0
-    else
-      check_arg_num opts, args, num = 1
-      _command = args[0]
-    end
+    _command = args.target_command
     configs = read_json SWPRO_CONF_PATH, io
 
     if configs.nil?
       abort
     end
 
-    if opts.all
+    if _command == "all"
       configs.each do |config|
         Switch::Proxy::MyCli.start(["disable", config.cmd_name.to_s], io: io)
       end
       return 1
     end
 
-    safe _command, index = search_command configs, _command
-    safe index, config = configs[index]
-    if config.nil?
+    index = search_command configs, _command
+    if index.nil?
       abort
     end
+    config = configs[index]
 
     if config.require_setting
       Switch::Proxy::MyCli.start(["disable", config.require_setting.to_s], io: io)

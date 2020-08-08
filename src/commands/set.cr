@@ -2,14 +2,8 @@ module Switch::Proxy::Commands
   include Switch::Proxy::Helper
 
   def set(opts, args, io)
-    if opts.all
-      check_arg_num opts, args, num = 1
-      _url = args[0]?
-    else
-      check_arg_num opts, args, num = 2
-      _command = args[0]?
-      _url = args[1]?
-    end
+    _command = args.target_command
+    _url = args.url
 
     configs = read_json SWPRO_CONF_PATH, io
 
@@ -17,19 +11,18 @@ module Switch::Proxy::Commands
       abort
     end
 
-    if opts.all
+    if _command == "all"
       configs.each do |config|
         Switch::Proxy::MyCli.start(["set", config.cmd_name.to_s, _url], io: io)
       end
       return 1
     end
 
-    safe _command, index = search_command configs, _command
-    safe index, config = configs[index]
-
-    if config.nil?
+    index = search_command configs, _command
+    if index.nil?
       abort
     end
+    config = configs[index]
 
     if config.require_setting
       Switch::Proxy::MyCli.start(["set", config.require_setting.to_s, _url], io: io)

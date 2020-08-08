@@ -6,7 +6,6 @@ require "./configs.cr"
 require "./commands/**"
 require "./helper/**"
 
-
 module Switch::Proxy
   VERSION = "0.2.3"
 
@@ -20,7 +19,7 @@ module Switch::Proxy
         io.puts opts.help_string
       end
 
-      sub "execute" do 
+      sub "execute" do
         include Switch::Proxy::Commands
 
         desc "execute command with proxy setting."
@@ -40,6 +39,11 @@ module Switch::Proxy
         desc "enable proxy setting."
         usage "swpro enable [command]"
 
+        argument "target-command",
+          desc: "Command name to enable the proxy． \"all\"=All the commands registered in swpro will be targeted.",
+          type: String,
+          required: true
+
         run do |opts, args, io|
           enable opts, args, io
         end
@@ -55,6 +59,11 @@ module Switch::Proxy
         desc "disable proxy setting."
         usage "swpro disable [command]"
 
+        argument "target-command",
+          desc: "Command name to disable the proxy． \"all\"=All the commands registered in swpro will be targeted.",
+          type: String,
+          required: true
+
         run do |opts, args, io|
           disable opts, args, io
         end
@@ -69,7 +78,17 @@ module Switch::Proxy
 
         desc "set configs."
         usage "swpro set [command] [proxy server uri]"
-          
+
+        argument "target-command",
+          desc: "Command name to set the proxy． \"all\"=All the commands registered in swpro will be targeted.",
+          type: String,
+          required: true
+
+        argument "url",
+          desc: "Proxy Server URL",
+          type: String,
+          required: true
+
         run do |opts, args, io|
           set opts, args, io
         end

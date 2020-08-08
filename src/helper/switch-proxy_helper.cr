@@ -1,14 +1,6 @@
 require "./../configs.cr"
 
 module Switch::Proxy::Helper::Common
-  def check_arg_num(opts, args, num, io : IO = STDOUT)
-    if (args.size < num)
-      io.puts "[ERROR]\t Check the arguments."
-      io.puts opts.help_string
-      abort
-    end
-  end
-
   def set_proxy(path : Path, config : Config, url : String, io : IO = STDOUT) : String?
     check_writable path
     check_file_exists path
