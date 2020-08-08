@@ -2,10 +2,9 @@
 require "clim"
 require "json"
 require "file_utils"
-require "./switch-proxy_helper.cr"
 require "./configs.cr"
-require "./commands/*"
-require "./commands/internal/*"
+require "./commands/**"
+require "./helper/**"
 
 
 module Switch::Proxy

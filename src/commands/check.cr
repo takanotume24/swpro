@@ -1,5 +1,8 @@
+require "../helper/*"
+
 module Switch::Proxy::Commands
-  include Switch::Proxy::Helper
+  include Switch::Proxy::Helper::Common
+  include Switch::Proxy::Helper::FileHelper
 
   def check(opts, args, io)    
     check_arg_num opts, args, num = 0

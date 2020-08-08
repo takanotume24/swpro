@@ -1,12 +1,14 @@
 module Switch::Proxy::Commands
+  include Switch::Proxy::Helper
+
   def set(opts, args, io)
     if opts.all
       check_arg_num opts, args, num = 1
-      _url = args[0]
+      _url = args[0]?
     else
       check_arg_num opts, args, num = 2
-      _command = args[0]
-      _url = args[1]
+      _command = args[0]?
+      _url = args[1]?
     end
 
     configs = read_json SWPRO_CONF_PATH, io
