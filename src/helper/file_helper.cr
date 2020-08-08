@@ -1,12 +1,13 @@
 require "./io_helper.cr"
+require "./switch-proxy_helper"
 require "../config/user_config"
 require "../config/proxy_list"
 
 module Switch::Proxy::Helper::FileHelper
   extend self
   include Switch::Proxy::Helper::IOHelper
-  include  Switch::Proxy::Config::ProxyConfig
-  include Switch::Proxy::Config::UserConfig
+  include Switch::Proxy::Helper::Common
+  include Switch::Proxy::Config
 
   def check_writable(path : Path, io : IO = STDOUT)
     if (!File.writable? path)
@@ -58,9 +59,14 @@ module Switch::Proxy::Helper::FileHelper
     io.puts info "#{src.to_s.colorize.underline} copied to #{dest.to_s.colorize.underline}"
   end
 
-  def read_proxy_configs_from_json(path : Path, io : IO) : Array(ProxyConfig)?
+  def read_proxy_configs_from_json(path : Path, io : IO) : Array(ProxyConfig::ProxyConfig)?
     begin
-      return Array(ProxyConfig).from_json(File.read path)
+      config = Array(ProxyConfig::ProxyConfig).from_json(File.read path)
+      if is_vaild_json? config, io
+        return config
+      else
+        return nil
+      end
     rescue ex
       io.puts error "Failed to read #{path.to_s.colorize.underline}. Check the format of the json file."
       io.puts ex.message
@@ -68,14 +74,23 @@ module Switch::Proxy::Helper::FileHelper
     end
   end
 
-  def read_user_config_from_json(path : Path, io : IO) : UserConfig?
+  def read_user_config_from_json(path : Path, io : IO) : UserConfig::UserConfig?
     begin
-      return UserConfig.from_json(File.read path)
+      config = UserConfig::UserConfig.from_json(File.read path)
+      if is_vaild_json? config, io
+        return config
+      else
+        return nil
+      end
     rescue ex
       io.puts error "Failed to read #{path.to_s.colorize.underline}. Check the format of the json file."
       io.puts ex.message
       return nil
     end
+  end
+
+  def write_json(config : UserConfig::UserConfig)
+    File.write UserConfig.get_path, config.to_json
   end
 
   def write_conf_file(path : Path, content : String?, io)
@@ -86,7 +101,7 @@ module Switch::Proxy::Helper::FileHelper
       if !Dir.exists? backup_dir_path
         Dir.mkdir_p backup_dir_path
       end
-      
+
       cp path, backup_file_path, io
       File.write(path, content)
     else

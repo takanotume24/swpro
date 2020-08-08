@@ -3,10 +3,9 @@ require "./../config/proxy_list.cr"
 module Switch::Proxy::Helper::Common
   extend self
   include Switch::Proxy::Config
-  include Switch::Proxy::Config::ProxyConfig
   include Switch::Proxy::Helper::IOHelper
   
-  def set_proxy(path : Path, config : ProxyConfig, url : String, io : IO = STDOUT) : String?
+  def set_proxy(path : Path, config : ProxyConfig::ProxyConfig, url : String, io : IO = STDOUT) : String?
     check_writable path
     check_file_exists path
 
@@ -24,7 +23,7 @@ module Switch::Proxy::Helper::Common
     return nil
   end
 
-  def set_value(path : Path, content : String, option_set : OptionSet, url : String, io : IO = STDOUT) : String
+  def set_value(path : Path, content : String, option_set : ProxyConfig::OptionSet, url : String, io : IO = STDOUT) : String
     regex = option_set.enable_set.regex
     match_data = content.scan(regex)
     user_config = read_user_config_from_json UserConfig.get_path, io
@@ -56,7 +55,7 @@ module Switch::Proxy::Helper::Common
     return content
   end
 
-  def search_command(configs : Array(ProxyConfig), command : String, io : IO = STDOUT) : Int32?
+  def search_command(configs : Array(ProxyConfig::ProxyConfig), command : String, io : IO = STDOUT) : Int32?
     i = 0
     configs.each do |config|
       if (config.cmd_name == command)
@@ -71,7 +70,7 @@ module Switch::Proxy::Helper::Common
     return i
   end
 
-  def select_path(config : ProxyConfig, opts) : Path?
+  def select_path(config : ProxyConfig::ProxyConfig, opts) : Path?
     conf_path = config.conf_path
     if conf_path
       system = conf_path.system
@@ -99,7 +98,7 @@ module Switch::Proxy::Helper::Common
     end
   end
 
-  def is_vaild_json?(configs : Array(ProxyConfig), io : IO) : Bool
+  def is_vaild_json?(configs : Array(ProxyConfig::ProxyConfig), io : IO) : Bool
     i = 0
     result = false
     configs.each do |config|
@@ -120,6 +119,13 @@ module Switch::Proxy::Helper::Common
     return result
   end
 
-  def is_vaild_json?(config : UserConfig, io : IO) : Boot
+  def is_vaild_json?(config : UserConfig::UserConfig, io : IO) : Bool
+    if config.domain.nil?
+      io.puts error "in #{UserConfig.get_path}, \"domain\" must not be null."
+      io.puts error "Register the proxy server with #{"swpro set all".colorize.bold}."
+      false
+    else
+      true
+    end
   end
 end

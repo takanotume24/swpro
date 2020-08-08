@@ -3,6 +3,7 @@ require "../config/*"
 module Switch::Proxy::Commands
   extend self
   include Switch::Proxy::Helper
+  include Switch::Proxy::Helper::FileHelper
   include Switch::Proxy::Config
 
   def set(opts, args, io)
@@ -10,7 +11,8 @@ module Switch::Proxy::Commands
     _url = args.url
 
     proxy_configs = read_proxy_configs_from_json ProxyConfig.get_path, io
-    user_config= read_user_config_from_json UserConfig.get_path, io
+    
+    write_json UserConfig::UserConfig.new _url
 
     if proxy_configs.nil?
       abort
