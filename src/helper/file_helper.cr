@@ -3,6 +3,7 @@ require "../config/user_config"
 require "../config/proxy_list"
 
 module Switch::Proxy::Helper::FileHelper
+  extend self
   include Switch::Proxy::Helper::IOHelper
   include  Switch::Proxy::Config::ProxyConfig
   include Switch::Proxy::Config::UserConfig

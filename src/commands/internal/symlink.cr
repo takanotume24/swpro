@@ -1,4 +1,5 @@
 module Switch::Proxy::Commands::Internal
+  extend self
   include Switch::Proxy::Helper::Common
 
   def symlink(opts, args, io)

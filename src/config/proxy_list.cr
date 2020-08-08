@@ -2,10 +2,16 @@ require "json"
 require "./user_config"
 
 module Switch::Proxy::Config::ProxyConfig
-  SWPRO_PROXY_LIST_PATH = Path["~/.swpro/proxy_list.json"].normalize.expand(home: true)
+  extend self
 
+  def get_path
+    Path["~/.swpro/proxy_list.json"].normalize.expand(home: true)
+  end
+  
   def Regex.new(pull : JSON::PullParser)
-    user_config = Switch::Proxy::Config::UserConfig::UserConfig.from_json(File.read Path["~/.swpro/user_config.json"].normalize.expand(home: true))
+    user_conf_file = File.read Switch::Proxy::Config::UserConfig.get_path
+
+    user_config = Switch::Proxy::Config::UserConfig::UserConfig.from_json(user_conf_file)
     string = pull.read_string.gsub "REPLACEMENT", user_config.domain
     new string, Regex::Options::MULTILINE
   end

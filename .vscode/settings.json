@@ -1,3 +1,7 @@
 {
-    "crystal-lang.problems": "build"
+    "crystal-lang.problems": "build",
+    "crystal-lang.mainFile": "$(workspaceRoot)/src/cli.cr",
+    "crystal-lang.completion": true,
+    "crystal-lang.hover": true,
+    "crystal-lang.implementations": true
 }

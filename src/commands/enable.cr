@@ -1,13 +1,15 @@
 require "json"
 
 module Switch::Proxy::Commands
+  extend self
   include Switch::Proxy::Helper::IOHelper
+  include Switch::Proxy::Config
 
   def enable(opts, args, io)
     _command = args.target_command
 
-    proxy_configs = read_proxy_configs_from_json SWPRO_PROXY_LIST_PATH, io
-    user_config = read_user_config_from_json SWPRO_USER_CONFIG_PATH, io
+    proxy_configs = read_proxy_configs_from_json ProxyConfig.get_path, io
+    user_config = read_user_config_from_json UserConfig.get_path, io
 
     if proxy_configs.nil?
       abort

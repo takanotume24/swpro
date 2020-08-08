@@ -1,6 +1,7 @@
 require "../../helper/file_helper"
 
 module Switch::Proxy::Commands::Internal
+  extend self
   include Switch::Proxy::Helper::FileHelper
 
   def cp_json(opts, args, io)

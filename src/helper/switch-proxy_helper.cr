@@ -1,6 +1,7 @@
 require "./../config/proxy_list.cr"
 
 module Switch::Proxy::Helper::Common
+  extend self
   include Switch::Proxy::Config::ProxyConfig
   
   def set_proxy(path : Path, config : ProxyConfig, url : String, io : IO = STDOUT) : String?
