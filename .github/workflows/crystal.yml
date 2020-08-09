@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     container:
@@ -18,12 +17,34 @@ jobs:
       run: crystal spec
     - name: Bulid
       run: make build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: bin
+        path: ./
+
+  docker-test:
+    name: test by docker container
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download bin
+      uses: actions/download-artifact@v2
+      with:
+        name: bin
     - name: on docker test
       run: make test
-    
-    - name: zip
-      run: zip -r swpro.zip ./
-    
+  
+  release:
+    name: release result
+    needs: docker-test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download bin
+      uses: actions/download-artifact@v2
+      with:
+        name: bin
+    - name: on docker test
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
