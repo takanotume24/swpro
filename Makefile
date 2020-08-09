@@ -20,6 +20,9 @@ update:
 	git pull
 	make build
 
+test:
+	$(MAKE) -C spec/docker/wget all
+
 uninstall:
 	sudo rm /bin/swpro
 	rm ~/.swpro.json

@@ -103,7 +103,7 @@ module Switch::Proxy::Helper::FileHelper
   def write_conf_file(path : Path, content : String?, io)
     if content
       backup_dir_path = "#{path.parent}/.#{path.basename}.backup.d"
-      backup_file_path = Path.new("#{backup_dir_path}/#{path.basename}.#{Time.local.to_s("%Y-%m-%d.%H-%M-%S")}.bak")
+      backup_file_path = Path.new("#{backup_dir_path}/#{path.basename}.#{Time.local.to_s("%Y-%m-%d.%H-%M-%S-%9N")}.bak")
 
       if !Dir.exists? backup_dir_path
         Dir.mkdir_p backup_dir_path
