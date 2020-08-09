@@ -1,5 +1,6 @@
 build:
 	shards build --release --static --verbose
+	chmod +x bin/swpro
 
 install:
 	sudo ./bin/swpro install
