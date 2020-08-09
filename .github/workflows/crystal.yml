@@ -33,7 +33,7 @@ jobs:
         with:
           name: bin
       - name: chmod +x
-        run: chmod +x swpro/bin/swpro
+        run: chmod +x bin/swpro
       - name: on docker test
         run: make test
 
@@ -47,7 +47,7 @@ jobs:
         with:
           name: bin
       - name: chmod +x
-        run: chmod +x swpro/bin/swpro
+        run: chmod +x bin/swpro
       - name: Zip
         run: zip -r swpro.zip .
       - name: Create Release
