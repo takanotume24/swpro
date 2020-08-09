@@ -2,7 +2,6 @@ require "../config/*"
 
 module Switch::Proxy::Commands
   extend self
-  include Switch::Proxy::Helper
   include Switch::Proxy::Helper::FileHelper
   include Switch::Proxy::Config
 
