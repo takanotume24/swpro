@@ -4,4 +4,3 @@ test:
 	
 clean:
 	docker-compose down
-	rm -f index.html*

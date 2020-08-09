@@ -4,7 +4,7 @@ module Switch::Proxy::Helper::Common
   extend self
   include Switch::Proxy::Config
   include Switch::Proxy::Helper::IOHelper
-  
+
   def set_proxy(path : Path, config : ProxyConfig::ProxyConfig, url : String, io : IO = STDOUT) : String?
     check_writable path
     check_file_exists path
@@ -105,7 +105,7 @@ module Switch::Proxy::Helper::Common
     end
   end
 
-  def is_vaild_json?(configs : Array(ProxyConfig::ProxyConfig), io : IO) : Bool
+  def is_vaild_json?(configs : Array(ProxyConfig::ProxyConfig), io : IO, verbose = false) : Bool
     i = 0
     result = false
     configs.each do |config|
@@ -117,7 +117,9 @@ module Switch::Proxy::Helper::Common
       when config.cmd_name.to_s.empty?
         io.puts error "No.#{i} cmd_name is empty."
       else
-        io.puts info "No.#{i},\tThere was no problem with [#{config.cmd_name}]."
+        if verbose
+          io.puts info "No.#{i},\tThere was no problem with [#{config.cmd_name}]."
+        end
         result = true
       end
 

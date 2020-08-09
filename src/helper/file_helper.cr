@@ -65,10 +65,10 @@ module Switch::Proxy::Helper::FileHelper
     chown_when_sudo path
   end
 
-  def read_proxy_configs_from_json(path : Path, io : IO) : Array(ProxyConfig::ProxyConfig)?
+  def read_proxy_configs_from_json(path : Path, io : IO, verbose = false) : Array(ProxyConfig::ProxyConfig)?
     begin
       config = Array(ProxyConfig::ProxyConfig).from_json(File.read path)
-      if is_vaild_json? config, io
+      if is_vaild_json? config, io, verbose
         return config
       else
         return nil
@@ -114,7 +114,7 @@ module Switch::Proxy::Helper::FileHelper
       chown_when_sudo path
     else
       io.puts error "Prevented an empty string from being written to the #{path.to_s.colorize.underline}"
-      return nil 
+      return nil
     end
   end
 
@@ -134,7 +134,7 @@ module Switch::Proxy::Helper::FileHelper
     # sudo で実行している時
     if whoami == "root" && whoami != sudo_user
       if parent_dir_user_name != whoami
-        File.chown path, uid, gid 
+        File.chown path, uid, gid
       end
     end
   end

@@ -6,8 +6,8 @@ module Switch::Proxy::Commands
   include Switch::Proxy::Helper::FileHelper
   include Switch::Proxy::Config
 
-  def check(opts, args, io)    
-    configs = read_proxy_configs_from_json ProxyConfig.get_path, io
+  def check(opts, args, io)
+    configs = read_proxy_configs_from_json ProxyConfig.get_path, io, verbose: true
 
     if configs.nil?
       return nil
