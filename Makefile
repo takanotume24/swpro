@@ -1,13 +1,12 @@
 build:
-	shards
-	crystal build src/cli.cr -o bin/swpro --release --static --verbose
+	shards build --release --static --verbose
 
 install:
 	sudo ./bin/swpro install
 
 install-with-crystal-env:
-	make init-crystal-env
-	make build
+	$(MAKE) init-crystal-env
+	$(MAKE) build
 	sudo ./bin/swpro install
 
 init-crystal-env:
@@ -18,11 +17,12 @@ init-crystal-env:
 
 update:
 	git pull
-	make build
+	$(MAKE) build
 
 test:
 	$(MAKE) -C spec/docker/wget test
 	$(MAKE) -C spec/docker/apt test
+	$(MAKE) clean
 
 clean:
 	$(MAKE) -C spec/docker/wget clean
