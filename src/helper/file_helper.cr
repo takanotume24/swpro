@@ -120,7 +120,10 @@ module Switch::Proxy::Helper::FileHelper
   def chown_when_sudo(path : Path)
     # ホームフォルダ以下にfileが存在するのであれば，chown user
 
-    sudo_user = ENV["SUDO_USER"]
+    sudo_user = ENV["SUDO_USER"]?
+    if sudo_user.nil?
+      return
+    end
     whoami = `whoami`.delete '\n'
     uid = `id -u $SUDO_USER`.to_i
     gid = `id -g $SUDO_USER`.to_i
