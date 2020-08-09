@@ -19,6 +19,7 @@ services:
       - ../../../../swpro/configs:/home/user/swpro/configs
     command: >
       bash -c "
+      cd swpro
       && sudo bin/swpro install
       && swpro set wget http://proxy-server:3128
       && wget example.com
