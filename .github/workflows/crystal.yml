@@ -21,7 +21,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: bin
-          path: ./
+          path: ./swpro/
 
   docker-test:
     name: test by docker container

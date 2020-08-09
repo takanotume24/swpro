@@ -22,9 +22,11 @@ services:
       cd swpro
       && sudo bin/swpro install
       && swpro set git http://proxy-server:3128
-      && sudo git update
+      && git clone https://github.com/takanotume24/swpro.git
       && swpro disable git
-      && sudo git update
+      && rm -r swpro
+      && git clone https://github.com/takanotume24/swpro.git
       && swpro enable git
-      && sudo git update
+      && rm -r swpro
+      && git clone https://github.com/takanotume24/swpro.git
       "
