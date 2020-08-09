@@ -97,7 +97,7 @@ module Switch::Proxy
       sub "check" do
         include Switch::Proxy::Commands
 
-        desc "check swpro.json"
+        desc "Check the format of the json file."
         usage "swpro check"
 
         run do |opts, args, io|

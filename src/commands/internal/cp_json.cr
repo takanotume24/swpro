@@ -10,7 +10,7 @@ module Switch::Proxy::Commands::Internal
     files.each do |file|
       src = Path["./configs/#{file}"].normalize.expand(home: true)
       dest = Path["~/.swpro/#{file}"].normalize.expand(home: true)
-      Dir.mkdir_p dest.parent
+      mkdir_p dest.parent
 
       cp src: src, dest: dest, io: io
     end

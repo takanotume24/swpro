@@ -35,7 +35,7 @@ module Switch::Proxy::Helper::FileHelper
 
   def check_file_exists(path : Path, io : IO = STDOUT)
     if (!File.file? path)
-      Dir.mkdir_p path.parent
+      mkdir_p path.parent
       file = File.new(path, "w")
       file.close
       io.puts info "#{path.to_s.colorize.underline} did not exist, so it was created."
@@ -56,7 +56,13 @@ module Switch::Proxy::Helper::FileHelper
     end
 
     FileUtils.cp src_path: src.to_s, dest: dest.to_s
+    chown_when_sudo dest
     io.puts info "#{src.to_s.colorize.underline} copied to #{dest.to_s.colorize.underline}"
+  end
+
+  def mkdir_p(path : Path)
+    Dir.mkdir_p path
+    chown_when_sudo path
   end
 
   def read_proxy_configs_from_json(path : Path, io : IO) : Array(ProxyConfig::ProxyConfig)?
@@ -91,6 +97,7 @@ module Switch::Proxy::Helper::FileHelper
 
   def write_json(config : UserConfig::UserConfig)
     File.write UserConfig.get_path, config.to_json
+    chown_when_sudo UserConfig.get_path
   end
 
   def write_conf_file(path : Path, content : String?, io)
@@ -104,8 +111,27 @@ module Switch::Proxy::Helper::FileHelper
 
       cp path, backup_file_path, io
       File.write(path, content)
+      chown_when_sudo path
     else
       abort error "Prevented an empty string from being written to the #{path.to_s.colorize.underline}"
+    end
+  end
+
+  def chown_when_sudo(path : Path)
+    # ホームフォルダ以下にfileが存在するのであれば，chown user
+
+    sudo_user = ENV["SUDO_USER"]
+    whoami = `whoami`.delete '\n'
+    uid = `id -u $SUDO_USER`.to_i
+    gid = `id -g $SUDO_USER`.to_i
+    parent_dir_user_name = `stat -c %U #{path.parent}`.delete '\n'
+    parent_dir_group = `stat -c %G #{path.parent}`.delete '\n'
+
+    # sudo で実行している時
+    if whoami == "root" && whoami != sudo_user
+      if parent_dir_user_name != whoami
+        File.chown path, uid, gid 
+      end
     end
   end
 end
