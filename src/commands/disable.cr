@@ -8,10 +8,10 @@ module Switch::Proxy::Commands
     user_config = read_user_config_from_json UserConfig.get_path, io
 
     if proxy_configs.nil?
-      abort
+      return nil
     end
     if user_config.nil?
-      abort
+      return nil
     end
 
     if _command == "all"
@@ -23,7 +23,7 @@ module Switch::Proxy::Commands
 
     index = search_command proxy_configs, _command
     if index.nil?
-      abort
+      return nil
     end
     config = proxy_configs[index]
 
@@ -31,10 +31,10 @@ module Switch::Proxy::Commands
       Switch::Proxy::MyCli.start(["disable", config.require_setting.to_s], io: io)
     end
 
-    path = select_path config, opts
+    path = select_path config, opts, io
 
     if path.nil?
-      abort
+      return nil
     end
 
     check_file_exists_only_check path, io
@@ -45,7 +45,7 @@ module Switch::Proxy::Commands
     keys = config.keys
 
     if keys.nil?
-      abort
+      return nil
     end
 
     http_string = keys.http_proxy.disable_set.string.gsub user_config.replacement, user_config.domain
@@ -63,6 +63,6 @@ module Switch::Proxy::Commands
       end
     end
 
-    io.puts "[INFO]\t Disabled proxy settings for #{_command}."
+    io.puts info "Disabled proxy settings for #{_command}."
   end
 end

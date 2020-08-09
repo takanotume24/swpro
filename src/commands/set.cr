@@ -14,7 +14,7 @@ module Switch::Proxy::Commands
     write_json UserConfig::UserConfig.new _url
 
     if proxy_configs.nil?
-      abort
+      return nil
     end
 
     if _command == "all"
@@ -26,7 +26,7 @@ module Switch::Proxy::Commands
 
     index = search_command proxy_configs, _command
     if index.nil?
-      abort
+      return nil
     end
     config = proxy_configs[index]
 
@@ -34,10 +34,10 @@ module Switch::Proxy::Commands
       Switch::Proxy::MyCli.start(["set", config.require_setting.to_s, _url], io: io)
     end
 
-    path = select_path config, opts
+    path = select_path config, opts, io
 
     if path.nil?
-      abort
+      return nil
     end
 
     check_file_exists path
@@ -55,6 +55,6 @@ module Switch::Proxy::Commands
       end
     end
 
-    io.puts "[INFO]\t #{config.cmd_name}'s proxy settings are now complete"
+    io.puts info "#{config.cmd_name}'s proxy settings are now complete"
   end
 end

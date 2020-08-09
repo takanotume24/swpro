@@ -14,42 +14,48 @@ module Switch::Proxy::Helper::Common
 
     case
     when keys.nil?
-      io.puts "[ERROR]\t \"keys\" of \"#{config.cmd_name}\" is null."
+      io.puts error "\"keys\" of \"#{config.cmd_name}\" is null."
     else
       content = set_value(path, content, keys.http_proxy, url, io)
+      if content.nil?
+        return nil
+      end
       content = set_value(path, content, keys.https_proxy, url, io)
+      if content.nil?
+        return nil
+      end
       return content
     end
     return nil
   end
 
-  def set_value(path : Path, content : String, option_set : ProxyConfig::OptionSet, url : String, io : IO = STDOUT) : String
+  def set_value(path : Path, content : String, option_set : ProxyConfig::OptionSet, url : String, io : IO = STDOUT) : String?
     regex = option_set.enable_set.regex
     match_data = content.scan(regex)
     user_config = read_user_config_from_json UserConfig.get_path, io
     if user_config.nil?
       io.puts error "#{UserConfig.get_path.colorize.underline} is Nil."
-      abort
+      return nil
     end
 
     new_line = option_set.enable_set.string.gsub user_config.replacement, url
 
     if match_data.size == 0
       content += new_line + "\n"
-      io.puts "[INFO]\t Added: #{new_line}"
+      io.puts info "Added: #{new_line}"
       return content
     end
 
     if match_data.size > 0
-      printf "[INFO]\t in #{path}, #{match_data} already exists. Do you want to rewrite? (y/n)?: "
+      printf info "in #{path}, #{match_data} already exists. Do you want to rewrite? (y/n)?: "
 
       if read_line != "y"
-        io.puts "[INFO]\t Did not rewrite."
+        io.puts info "Did not rewrite."
         return content
       end
 
       content = content.gsub(regex, new_line)
-      io.puts "[INFO]\t Rewritten."
+      io.puts info "Rewritten."
     end
 
     return content
@@ -64,13 +70,13 @@ module Switch::Proxy::Helper::Common
       i += 1
     end
     if i == configs.size
-      io.puts "[ERROR]\t #{command} is not supported."
+      io.puts error "#{command} is not supported."
       return nil
     end
     return i
   end
 
-  def select_path(config : ProxyConfig::ProxyConfig, opts) : Path?
+  def select_path(config : ProxyConfig::ProxyConfig, opts, io : IO) : Path?
     conf_path = config.conf_path
     if conf_path
       system = conf_path.system
@@ -93,7 +99,8 @@ module Switch::Proxy::Helper::Common
       when system
         return Path[system].normalize.expand(home: true)
       else
-        abort "[ERROR]\t There is no system configuration path or user configuration path set for \"#{config.cmd_name}\" "
+        io.puts error "There is no system configuration path or user configuration path set for \"#{config.cmd_name}\" "
+        return nil
       end
     end
   end
@@ -106,11 +113,11 @@ module Switch::Proxy::Helper::Common
 
       case
       when conf_path && conf_path.user.nil? && conf_path.system.nil?
-        io.puts "[ERROR]\t No.#{i} conf_path.user and conf_path.system are empty"
+        io.puts error "No.#{i} conf_path.user and conf_path.system are empty"
       when config.cmd_name.to_s.empty?
-        io.puts "[ERROR]\t No.#{i} cmd_name is empty."
+        io.puts error "No.#{i} cmd_name is empty."
       else
-        io.puts "[INFO]\t No.#{i},\tThere was no problem with [#{config.cmd_name}]."
+        io.puts info "No.#{i},\tThere was no problem with [#{config.cmd_name}]."
         result = true
       end
 

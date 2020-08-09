@@ -10,8 +10,7 @@ module Switch::Proxy::Commands
     configs = read_proxy_configs_from_json ProxyConfig.get_path, io
 
     if configs.nil?
-      abort
+      return nil
     end
-    is_vaild_json? configs, io
   end
 end

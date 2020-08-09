@@ -6,7 +6,7 @@ module Switch::Proxy::Commands::Internal
     new_path = Path["/bin/swpro"].normalize.expand(home: true).to_s
     old_path = Path["./bin/swpro"].normalize.expand(home: true).to_s
     if File.file? new_path
-      io.puts "[INFO]\t Symbolic link already exists."
+      io.puts info "Symbolic link already exists."
       return -1
     end
     if !File.file? old_path

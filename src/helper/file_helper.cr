@@ -13,7 +13,7 @@ module Switch::Proxy::Helper::FileHelper
     if (!File.writable? path)
       string = error "Cannot write to #{path.to_s.colorize.underline}. Check permissions."
       io.puts string
-      abort
+      return nil
     end
   end
 
@@ -21,7 +21,7 @@ module Switch::Proxy::Helper::FileHelper
     if (!File.readable? path)
       string = error "Unable to read #{path.to_s.colorize.underline}. Check permissions."
       io.puts string
-      abort
+      return nil
     end
   end
 
@@ -113,7 +113,8 @@ module Switch::Proxy::Helper::FileHelper
       File.write(path, content)
       chown_when_sudo path
     else
-      abort error "Prevented an empty string from being written to the #{path.to_s.colorize.underline}"
+      io.puts error "Prevented an empty string from being written to the #{path.to_s.colorize.underline}"
+      return nil 
     end
   end
 
