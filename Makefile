@@ -21,7 +21,10 @@ update:
 	make build
 
 test:
-	$(MAKE) -C spec/docker/wget all
+	$(MAKE) -C spec/docker/wget test
+
+clean:
+	$(MAKE) -C spec/docker/wget clean
 
 uninstall:
 	sudo rm /bin/swpro

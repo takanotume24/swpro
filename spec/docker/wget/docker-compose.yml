@@ -21,9 +21,9 @@ services:
       cd swpro
       && sudo bin/swpro install
       && swpro set wget http://proxy-server:3128
-      && wget google.com
+      && wget example.com
       && swpro disable wget
-      && wget google.com
+      && wget example.com
       && swpro enable wget
-      && wget google.com
+      && wget example.com
       "
