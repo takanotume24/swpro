@@ -22,9 +22,11 @@ update:
 
 test:
 	$(MAKE) -C spec/docker/wget test
+	$(MAKE) -C spec/docker/apt test
 
 clean:
 	$(MAKE) -C spec/docker/wget clean
+	$(MAKE) -C spec/docker/apt clean
 
 uninstall:
 	sudo rm /bin/swpro

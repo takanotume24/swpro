@@ -10,7 +10,7 @@ services:
       - /srv/docker/squid/cache:/var/spool/squid
 
 
-  wget:
+  apt:
     depends_on:
       - proxy-server
     build: .
@@ -21,10 +21,10 @@ services:
       bash -c "
       cd swpro
       && sudo bin/swpro install
-      && swpro set wget http://proxy-server:3128
-      && wget example.com
-      && swpro disable wget
-      && wget example.com
-      && swpro enable wget
-      && wget example.com
+      && sudo swpro set apt http://proxy-server:3128
+      && sudo apt update
+      && swpro disable apt
+      && sudo apt update
+      && swpro enable apt
+      && sudo apt update
       "

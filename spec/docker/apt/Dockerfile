@@ -1,9 +1,8 @@
 FROM ubuntu:18.04
 
 RUN apt update && apt install -y \
-    sudo \
-    wget
-    
+    sudo
+
 ARG user_name=user
 ARG wkdir=/home/${user_name}
 
