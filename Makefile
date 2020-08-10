@@ -33,4 +33,4 @@ clean:
 
 uninstall:
 	sudo rm /bin/swpro
-	rm ~/.swpro.json
+	rm -r ~/.swpro
