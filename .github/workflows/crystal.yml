@@ -6,16 +6,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image: crystallang/crystal
-
     steps:
       - uses: actions/checkout@v1
       - name: install node.js
         run: |
-          sudo apt update && sudo apt install -y curl zstd
+          apt update && apt install -y curl zstd
           curl -sL https://deb.nodesource.com/setup_14.x | bash -
-          sudo apt install -y nodejs
+          apt install -y nodejs
+      - name: Install Cystal
+        run: |
+          curl -sSL https://dist.crystal-lang.org/apt/setup.sh | bash
+          apt install crystal libssl-dev libxml2-dev libyaml-dev libgmp-dev libz-dev  
+
       - name: Install dependencies
         run: shards install
       - name: Run tests
@@ -45,9 +47,9 @@ jobs:
     steps:
       - name: install node.js
         run: |
-          sudo apt update && sudo apt install -y curl zstd
+          apt update && apt install -y curl zstd
           curl -sL https://deb.nodesource.com/setup_14.x | bash -
-          sudo apt install -y nodejs
+          apt install -y nodejs
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -68,9 +70,9 @@ jobs:
     steps:
       - name: install node.js
         run: |
-          sudo apt update && sudo apt install -y curl zstd 
+          apt update && apt install -y curl zstd 
           curl -sL https://deb.nodesource.com/setup_14.x | bash -
-          sudo apt install -y nodejs
+          apt install -y nodejs
       - name: Cache node modules
         uses: actions/cache@v2
         env:
