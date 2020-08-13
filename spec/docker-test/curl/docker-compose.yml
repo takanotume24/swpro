@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  proxy-server:
+    image: sameersbn/squid:3.5.27-2
+    ports:
+      - "3128:3128"
+    volumes:
+      - ../common_conf/squid.conf:/etc/squid/squid.conf
+      - /srv/docker/squid/cache:/var/spool/squid
+
+
+  curl:
+    depends_on:
+      - proxy-server
+    build: .
+    volumes:
+      - ../../../../swpro:/home/user/swpro
+
+    user: user:user
+    command: >
+      bash -c "
+      cd swpro
+      && sudo chown -R user:user . 
+      && sudo bin/swpro install
+      && sudo swpro set curl http://proxy-server:3128
+      && curl http://example.com
+      && sudo swpro disable curl
+      && curl http://example.com
+      && sudo swpro enable curl
+      && curl http://example.com
+      "

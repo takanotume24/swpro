@@ -38,6 +38,8 @@ jobs:
           - apt
           - wget
           - git
+          - apt-add-repository
+          - curl
 
     steps:
       - name: Download bin

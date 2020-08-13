@@ -24,12 +24,16 @@ test:
 	$(MAKE) -C spec/docker-test/wget test
 	$(MAKE) -C spec/docker-test/apt test
 	$(MAKE) -C spec/docker-test/git test
+	$(MAKE) -C spec/docker-test/curl test
+	$(MAKE) -C spec/docker-test/apt-add-repository test
 	$(MAKE) clean
 
 clean:
 	$(MAKE) -C spec/docker-test/wget clean
 	$(MAKE) -C spec/docker-test/apt clean
 	$(MAKE) -C spec/docker-test/git clean
+	$(MAKE) -C spec/docker-test/curl clean
+	$(MAKE) -C spec/docker-test/apt-add-repository clean
 
 uninstall:
 	sudo rm /bin/swpro
