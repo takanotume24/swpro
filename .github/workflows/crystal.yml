@@ -25,7 +25,7 @@ jobs:
         env:
           cache-name: cache-build-bin
         with:
-          path: ./
+          path: .
           key: ${{github.sha}}
 
   docker-test:
@@ -46,7 +46,7 @@ jobs:
         env:
           cache-name: cache-build-bin
         with:
-          path: ./
+          path: .
           key: ${{github.sha}}
       - name: chmod +x
         run: chmod +x bin/swpro
@@ -63,10 +63,12 @@ jobs:
         env:
           cache-name: cache-build-bin
         with:
-          path: ./
+          path: .
           key: ${{github.sha}}
       - name: chmod +x
-        run: chmod +x bin/swpro
+        run: |
+          ls -al 
+          chmod +x bin/swpro
       - name: Zip
         run: zip -r swpro.zip .
       - name: Create Release
@@ -86,6 +88,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./swpro.zip
+          asset_path: .swpro.zip
           asset_name: swpro.zip
           asset_content_type: application/zip
