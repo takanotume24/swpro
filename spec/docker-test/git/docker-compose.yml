@@ -21,6 +21,7 @@ services:
     command: >
       bash -c "
       cd swpro
+      && sudo chown -R user:user . 
       && sudo bin/swpro install
       && swpro set git http://proxy-server:3128
       && ls -al

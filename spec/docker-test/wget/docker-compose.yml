@@ -22,8 +22,7 @@ services:
       ls -al
       && ls ./swpro -al
       && cd ./swpro
-      && ls -al
-      && ls bin -al
+      && sudo chown -R user:user .
       && sudo bin/swpro install
       && swpro set wget http://proxy-server:3128
       && wget example.com --spider 
