@@ -62,7 +62,7 @@ The way to set the proxy was different, and it was necessary to check the settin
    ```
    Write proxy settings to all registered commands
    ```
-   $ sudo swpro set http://proxy.example.com:8080
+   $ sudo swpro set all http://proxy.example.com:8080
    ```
 <br/>
 
