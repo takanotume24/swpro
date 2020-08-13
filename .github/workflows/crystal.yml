@@ -20,13 +20,12 @@ jobs:
         run: crystal spec
       - name: Bulid
         run: make build
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-build-bin
+        
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          path: .
-          key: ${{github.sha}}
+          name: bin
+          path: ./
 
   docker-test:
     name: test by docker container
@@ -41,15 +40,13 @@ jobs:
           - git
 
     steps:
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-build-bin
+      - name: Download bin
+        uses: actions/download-artifact@v2
         with:
-          path: .
-          key: ${{github.sha}}
+          name: bin
       - name: chmod +x
         run: chmod +x bin/swpro
+
       - name: ${{matrix.command}} on docker test
         run: make -c spec/docker-test/${{matrix.command}} test
 
@@ -58,19 +55,16 @@ jobs:
     needs: docker-test
     runs-on: ubuntu-latest
     steps:
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-build-bin
+      - name: Download bin
+        uses: actions/download-artifact@v2
         with:
-          path: .
-          key: ${{github.sha}}
+          name: bin
       - name: chmod +x
-        run: |
-          ls -al 
-          chmod +x bin/swpro
+        run: chmod +x bin/swpro
+
       - name: Zip
         run: zip -r swpro.zip .
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.0.0
@@ -81,6 +75,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: true
           prerelease: false
+
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1.0.1
