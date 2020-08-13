@@ -10,12 +10,12 @@ jobs:
       image: crystallang/crystal
 
     steps:
+      - uses: actions/checkout@v1
       - name: install node.js
         run: |
           sudo apt update && sudo apt install -y curl zstd
           curl -sL https://deb.nodesource.com/setup_14.x | bash -
           sudo apt install -y nodejs
-      - uses: actions/checkout@v1
       - name: Install dependencies
         run: shards install
       - name: Run tests
