@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  proxy-server:
+    image: sameersbn/squid:3.5.27-2
+    ports:
+      - "3128:3128"
+    volumes:
+      - ../common_conf/squid.conf:/etc/squid/squid.conf
+      - /srv/docker/squid/cache:/var/spool/squid
+
+
+  apt:
+    depends_on:
+      - proxy-server
+    build: .
+    volumes:
+      - ../../../../swpro:/home/user/swpro
+
+    user: user:user
+    command: >
+      bash -c "
+      cd swpro
+      && sudo bin/swpro install
+      && sudo swpro set apt http://proxy-server:3128
+      && sudo apt update
+      && sudo swpro disable apt
+      && sudo apt update
+      && sudo swpro enable apt
+      && sudo apt update
+      "

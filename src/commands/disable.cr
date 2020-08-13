@@ -56,10 +56,11 @@ module Switch::Proxy::Commands
     write_conf_file(path, content, io)
 
     after_execute = config.after_execute
+    
     if after_execute
-      io.puts "[EXEC]\t #{after_execute}"
-      after_execute.each do |command|
-        system command
+      result = execute_after_execute after_execute, io
+      if result.nil?
+        return nil
       end
     end
 

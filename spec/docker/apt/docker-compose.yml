@@ -15,8 +15,8 @@ services:
       - proxy-server
     build: .
     volumes:
-      - ../../../../swpro/bin:/home/user/swpro/bin
-      - ../../../../swpro/configs:/home/user/swpro/configs
+      - ../../../../swpro:/home/user/swpro
+
     command: >
       bash -c "
       cd swpro

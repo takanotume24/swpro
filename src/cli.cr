@@ -1,4 +1,4 @@
-require "./switch-proxy.cr"
+require "./**"
 
 include Switch::Proxy
 MyCli.start (ARGV)

@@ -3,7 +3,9 @@ require "json"
 module Switch::Proxy::Commands
   extend self
   include Switch::Proxy::Helper::IOHelper
+  include Switch::Proxy::Hepler::SystemHelper
   include Switch::Proxy::Config
+
 
   def enable(opts, args, io)
     _command = args.target_command
@@ -66,9 +68,9 @@ module Switch::Proxy::Commands
 
     after_execute = config.after_execute
     if after_execute
-      io.puts "[EXEC]\t #{after_execute}"
-      after_execute.each do |command|
-        system command
+      result = execute_after_execute after_execute, io
+      if result.nil?
+        return nil
       end
     end
 

@@ -15,6 +15,10 @@ module Switch::Proxy::Helper::IOHelper
         "[WARN]\t".colorize(:yellow).to_s + string
     end
 
+    def exec(string)
+        "[EXEC]\t" + string
+    end
+
     macro pp_debug(string)
         puts "{{string}}: #{{{string}}.inspect}"
     end

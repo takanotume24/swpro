@@ -21,15 +21,15 @@ update:
 
 test:
 	$(MAKE) clean
-	$(MAKE) -C spec/docker/wget test
-	$(MAKE) -C spec/docker/apt test
-	$(MAKE) -C spec/docker/git test
+	$(MAKE) -C spec/docker-test/wget test
+	$(MAKE) -C spec/docker-test/apt test
+	$(MAKE) -C spec/docker-test/git test
 	$(MAKE) clean
 
 clean:
-	$(MAKE) -C spec/docker/wget clean
-	$(MAKE) -C spec/docker/apt clean
-	$(MAKE) -C spec/docker/git clean
+	$(MAKE) -C spec/docker-test/wget clean
+	$(MAKE) -C spec/docker-test/apt clean
+	$(MAKE) -C spec/docker-test/git clean
 
 uninstall:
 	sudo rm /bin/swpro

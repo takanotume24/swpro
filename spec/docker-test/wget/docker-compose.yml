@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  proxy-server:
+    image: sameersbn/squid:3.5.27-2
+    ports:
+      - "3128:3128"
+    volumes:
+      - ../common_conf/squid.conf:/etc/squid/squid.conf
+      - /srv/docker/squid/cache:/var/spool/squid
+
+
+  wget:
+    depends_on:
+      - proxy-server
+    build: .
+    volumes:
+      - ../../../../swpro:/home/user/swpro
+    user: user:user
+    command: >
+      bash -c "
+      ls -al
+      && ls ./swpro -al
+      && cd ./swpro
+      && ls -al
+      && ls bin -al
+      && sudo bin/swpro install
+      && swpro set wget http://proxy-server:3128
+      && wget example.com --spider 
+      && swpro disable wget
+      && wget example.com --spider 
+      && swpro enable wget
+      && wget example.com --spider 
+      "

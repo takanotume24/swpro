@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  proxy-server:
+    image: sameersbn/squid:3.5.27-2
+    ports:
+      - "3128:3128"
+    volumes:
+      - ../common_conf/squid.conf:/etc/squid/squid.conf
+      - /srv/docker/squid/cache:/var/spool/squid
+
+
+  git:
+    depends_on:
+      - proxy-server
+    build: .
+    volumes:
+      - ../../../../swpro:/home/user/swpro
+
+    user: user:user
+    command: >
+      bash -c "
+      cd swpro
+      && sudo bin/swpro install
+      && swpro set git http://proxy-server:3128
+      && ls -al
+      && git clone https://github.com/fw876/helloworld.git
+      && swpro disable git
+      && rm -r helloworld
+      && git clone https://github.com/fw876/helloworld.git
+      && swpro enable git
+      && rm -r helloworld
+      && git clone https://github.com/fw876/helloworld.git
+      && rm -r helloworld
+      "

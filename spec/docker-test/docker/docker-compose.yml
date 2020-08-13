@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  proxy-server:
+    image: sameersbn/squid:3.5.27-2
+    ports:
+      - "3128:3128"
+    volumes:
+      - ../common_conf/squid.conf:/etc/squid/squid.conf
+      - /srv/docker/squid/cache:/var/spool/squid
+
+
+  docker:
+    depends_on:
+      - proxy-server
+    build: .
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - ../../../../swpro:/home/user/swpro
+        
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    user: user:user
+    pid: 
+    command: ps aux 
+      # bash -c "
+      # cd swpro
+      # && ps aux
+      # && whoami
+      # && sudo systemctl start docker
+      # && sudo bin/swpro install
+      # && sudo swpro set docker http://proxy-server:3128
+      # && sudo docker pull nginx
+      # && sudo swpro disable docker
+      # && sudo docker pull nginx
+      # && swpro enable docker
+      # && sudo docker pull nginx
+      # "

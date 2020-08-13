@@ -118,18 +118,18 @@
             "system":"/etc/systemd/system/docker.service.d/http-proxy.conf"
         },
         "after_execute":[
-            "sudo systemctl daemon-reload",
-            "sudo systemctl restart docker"
+            "sudo /bin/systemctl daemon-reload",
+            "sudo /bin/systemctl restart docker"
         ],
         "keys":{
             "http_proxy":{
                 "enable_set":{
-                    "regex": "^Environment=\"HTTP_PROXY=REPLACEMENT\"",
-                    "string": "Environment=\"HTTP_PROXY=REPLACEMENT\""
+                    "regex": "^[Service]\nEnvironment=\"HTTP_PROXY=REPLACEMENT\"",
+                    "string": "[Service]\nEnvironment=\"HTTP_PROXY=REPLACEMENT\""
                 },
                 "disable_set":{
-                    "regex": "# *Environment=\"HTTP_PROXY=REPLACEMENT\"",
-                    "string": "# Environment=\"HTTP_PROXY=REPLACEMENT\""
+                    "regex": "#^[Service]\nEnvironment=\"HTTP_PROXY=REPLACEMENT\"",
+                    "string": "[Service]\n# Environment=\"HTTP_PROXY=REPLACEMENT\""
                 }
             },
             "https_proxy":{
@@ -138,7 +138,7 @@
                     "string": "Environment=\"HTTPS_PROXY=REPLACEMENT\""
                 },
                 "disable_set":{
-                    "regex": "# *Environment=\"HTTPS_PROXY=REPLACEMENT\"",
+                    "regex": "^# Environment=\"HTTPS_PROXY=REPLACEMENT\"",
                     "string": "# Environment=\"HTTPS_PROXY=REPLACEMENT\""
                 }
             }
