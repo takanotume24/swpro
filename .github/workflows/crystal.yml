@@ -10,6 +10,11 @@ jobs:
       image: crystallang/crystal
 
     steps:
+      - name: install node.js
+        run: |
+          apt update && apt install -y curl zstd
+          curl -sL https://deb.nodesource.com/setup_14.x | bash -
+          apt install -y nodejs
       - uses: actions/checkout@v1
       - name: Install dependencies
         run: shards install
@@ -17,11 +22,13 @@ jobs:
         run: crystal spec
       - name: Bulid
         run: make build
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-build-bin
         with:
-          name: bin
           path: ./
+          key: ${{github.sha}}
 
   docker-test:
     name: test by docker container
@@ -30,25 +37,47 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04]
+        command: 
+          - apt
+          - get
+          - git
+
     steps:
-      - name: Download bin
-        uses: actions/download-artifact@v2
+      - name: install node.js
+        run: |
+          apt update && apt install -y curl zstd
+          curl -sL https://deb.nodesource.com/setup_14.x | bash -
+          apt install -y nodejs
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-build-bin
         with:
-          name: bin
+          path: ./
+          key: ${{github.sha}}
       - name: chmod +x
         run: chmod +x bin/swpro
-      - name: on docker test
-        run: make test
+      - name: ${{matrix.command}} on docker test
+        run: make -c spec/docker-test/${{matrix.command}} test
 
   release:
     name: release result
     needs: docker-test
     runs-on: ubuntu-latest
     steps:
-      - name: Download bin
-        uses: actions/download-artifact@v2
+      - name: install node.js
+        run: |
+          apt update && apt install -y curl zstd 
+          curl -sL https://deb.nodesource.com/setup_14.x | bash -
+          apt install -y nodejs
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-build-bin
         with:
-          name: bin
+          path: ./
+          key: ${{github.sha}}
       - name: chmod +x
         run: chmod +x bin/swpro
       - name: Zip
