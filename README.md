@@ -60,6 +60,10 @@ The way to set the proxy was different, and it was necessary to check the settin
    ```
    $ swpro set wget http://proxy.example.com:8080
    ```
+   Write proxy settings to all registered commands
+   ```
+   $ sudo swpro set http://proxy.example.com:8080
+   ```
 <br/>
 
 
@@ -73,7 +77,7 @@ The way to set the proxy was different, and it was necessary to check the settin
    ```
    Disable the proxy settings for all registered commands
    ```
-   $ sudo swpro disable --all 
+   $ sudo swpro disable all 
    ```
 <br/>
 
@@ -88,7 +92,7 @@ The way to set the proxy was different, and it was necessary to check the settin
    ```
    Enable the proxy settings for all registered commands
    ```
-   $ sudo swpro enable --all
+   $ sudo swpro enable all
    ```
 <br/>
 
